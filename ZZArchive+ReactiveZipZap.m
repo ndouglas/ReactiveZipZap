@@ -99,6 +99,42 @@
     return [result setNameWithFormat:@"[%@ -rzz_updateEntries: %@]", self, entries];
 }
 
+- (RACSignal *)rzz_unarchiveToURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes {
+    RACSignal *result = [[self rzz_writeItemEntriesToURL:URL]
+        then:^RACSignal *{
+            RACSignal *result = nil;
+            if (includeExtendedAttributes) {
+                result = [self rzz_writeExtendedAttributeEntriesToURL:URL];
+            } else {
+                result = [RACSignal empty];
+            }
+            return result;
+        }];
+    return [result setNameWithFormat:@"[%@ -rzz_writeEntriesToURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
+}
+
+- (RACSignal *)rzz_writeItemEntriesToURL:(NSURL *)URL {
+    RACSignal *result = [[self.entries.rac_sequence.signal
+        filter:^BOOL(ZZArchiveEntry *entry) {
+            return ![entry.fileName containsString:RZZXattrFilenamePrefix];
+        }]
+        flattenMap:^RACSignal *(ZZArchiveEntry *entry) {
+            return [entry rzz_writeToURL:[URL URLByAppendingPathComponent:entry.fileName]];
+        }];
+    return [result setNameWithFormat:@"[%@ -rzz_writeItemEntriesToURL: %@]", self, URL];
+}
+
+- (RACSignal *)rzz_writeExtendedAttributeEntriesToURL:(NSURL *)URL {
+    RACSignal *result = [[self.entries.rac_sequence.signal
+        filter:^BOOL(ZZArchiveEntry *entry) {
+            return [entry.fileName containsString:RZZXattrFilenamePrefix];
+        }]
+        flattenMap:^RACSignal *(ZZArchiveEntry *entry) {
+            return [entry rzz_writeAsExtendedAttributesToURL:[URL URLByAppendingPathComponent:entry.fileName]];
+        }];
+    return [result setNameWithFormat:@"[%@ -rzz_writeItemEntriesToURL: %@]", self, URL];
+}
+
 @end
 
 

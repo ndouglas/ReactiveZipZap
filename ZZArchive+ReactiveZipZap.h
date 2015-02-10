@@ -46,4 +46,14 @@
 
 + (RACSignal *)rzz_ephemeralArchive;
 
+/**
+ Writes out the archive's entries to the specified URL.
+ 
+ @param URL The URL that will contain the written file(s).  Must be a directory.
+ @param includeExtendedAttributes Whether or not to write out any extended attributes found in the archive.
+ @return A signal that completes when the entries are written, or returns an error if one occurred.
+ */
+
+- (RACSignal *)rzz_unarchiveToURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes;
+
 @end
