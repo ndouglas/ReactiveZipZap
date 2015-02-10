@@ -81,4 +81,13 @@
 
 - (NSData *)rzz_valueForExtendedAttributeWithName:(NSString *)name error:(NSError **)error;
 
+/**
+ Removes the extended attribute with the specified name.
+ 
+ @param name The name of the extended attribute.
+ @param error An error object populated in the event of failure.
+ */
+
+- (BOOL)rzz_removeExtendedAttributeWithName:(NSString *)name error:(NSError **)error;
+
 @end

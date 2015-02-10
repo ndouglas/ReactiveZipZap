@@ -130,4 +130,16 @@ ssize_t RZZSizeOfExtendedAttributesOfURL(NSURL *URL, NSError **error) {
     return result;
 }
 
+- (BOOL)rzz_removeExtendedAttributeWithName:(NSString *)name error:(NSError **)error {
+    NSCAssert([self isFileURL], @"self needs to be a file URL");
+    BOOL result = YES;
+    if (removexattr(self.path.fileSystemRepresentation, name.UTF8String, RZZXattrOptions)) {
+        result = NO;
+        if (error) {
+            *error = RZZErrorForPOSIXErrorAtURL(errno, self);
+        }
+    }
+    return result;
+}
+
 @end
