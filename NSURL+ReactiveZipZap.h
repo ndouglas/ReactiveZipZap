@@ -24,6 +24,12 @@
 @property (copy, nonatomic, readonly) NSString *rzz_extendedAttributeLastPathComponent;
 
 /**
+ The path for an extended attributes file.
+ */
+
+@property (copy, nonatomic, readonly) NSString *rzz_extendedAttributePath;
+
+/**
  A URL to a temporary directory.
  
  
