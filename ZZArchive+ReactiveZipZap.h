@@ -20,4 +20,13 @@
 
 + (RACSignal *)rzz_archiveAtURL:(NSURL *)URL;
 
+/**
+ The archive at the specified URL, creating it if it does not already exist.
+ 
+ @param URL The URL at which the archive should be found.
+ @return An initialized instance of the class.
+ */
+
++ (RACSignal *)rzz_newArchiveAtURL:(NSURL *)URL;
+
 @end
