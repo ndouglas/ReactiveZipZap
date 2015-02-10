@@ -37,4 +37,13 @@
 
 + (RACSignal *)rzz_temporaryArchive;
 
+/**
+ A new archive at a temporary location.
+ 
+ @return A signal passing an initialized instance of the class.
+ @discussion The archive and its containing location will be deleted when the subscription is disposed.
+ */
+
++ (RACSignal *)rzz_ephemeralArchive;
+
 @end
