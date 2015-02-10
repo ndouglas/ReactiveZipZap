@@ -12,6 +12,12 @@
 @interface NSString (ReactiveZipZap)
 
 /**
+ The last path component for an extended attributes target.
+ */
+
+@property (copy, nonatomic, readonly) NSString *rzz_extendedAttributeTargetLastPathComponent;
+
+/**
  The path for an extended attributes target.
  */
 

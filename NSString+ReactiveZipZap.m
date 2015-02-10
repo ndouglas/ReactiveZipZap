@@ -12,6 +12,10 @@
 
 @implementation NSString (ReactiveZipZap)
 
+- (NSString *)rzz_extendedAttributeTargetLastPathComponent {
+    return [self.lastPathComponent stringByReplacingOccurrencesOfString:RZZXattrFilenamePrefix withString:@""];
+}
+
 - (NSString *)rzz_extendedAttributeTargetPath {
     return [self stringByReplacingOccurrencesOfString:RZZXattrFilenamePrefix withString:@""];
 }
