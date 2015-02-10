@@ -109,4 +109,25 @@ ssize_t RZZSizeOfExtendedAttributesOfURL(NSURL *URL, NSError **error) {
     return result;
 }
 
+- (NSData *)rzz_valueForExtendedAttributeWithName:(NSString *)name error:(NSError **)error {
+    NSCAssert([self isFileURL], @"self needs to be a file URL");
+    NSData *result = nil;
+    ssize_t size = getxattr(self.path.fileSystemRepresentation, name.UTF8String, NULL, 0, 0, RZZXattrOptions);
+    if (size != -1) {
+        char *value = calloc(1, size);
+        size = getxattr(self.path.fileSystemRepresentation, name.UTF8String, value, size, 0, RZZXattrOptions);
+        if (size != -1) {
+            result = [NSData dataWithBytes:value length:size];
+        } else if (error) {
+            *error = RZZErrorForPOSIXErrorAtURL(errno, self);
+        }
+        if (value) {
+            free(value);
+        }
+    } else if (size == -1) {
+        *error = RZZErrorForPOSIXErrorAtURL(errno, self);
+    }
+    return result;
+}
+
 @end

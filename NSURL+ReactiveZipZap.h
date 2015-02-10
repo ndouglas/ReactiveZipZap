@@ -71,4 +71,14 @@
 
 - (BOOL)rzz_setValue:(NSData *)_value forExtendedAttributeWithName:(NSString *)name error:(NSError **)error;
 
+/**
+ Fetches the value for the extended attribute with the specified name.
+ 
+ @param name The name of the extended attribute.
+ @param error An error object populated in the event of failure.
+ @return A data value.
+ */
+
+- (NSData *)rzz_valueForExtendedAttributeWithName:(NSString *)name error:(NSError **)error;
+
 @end
