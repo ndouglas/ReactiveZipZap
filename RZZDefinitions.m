@@ -9,3 +9,5 @@
 
 #import "RZZDefinitions.h"
 #import "ReactiveZipZap.h"
+
+NSString * const RZZXattrFilenamePrefix                                 = @".__xattr_";
