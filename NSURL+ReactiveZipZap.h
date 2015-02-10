@@ -90,4 +90,12 @@
 
 - (BOOL)rzz_removeExtendedAttributeWithName:(NSString *)name error:(NSError **)error;
 
+/**
+ Retrieves the dictionary of extended attributes with names and values.
+ 
+ @param error An error object populated in the event of failure.
+ */
+
+- (NSDictionary *)rzz_dictionaryWithExtendedAttributesOrError:(NSError **)error;
+
 @end

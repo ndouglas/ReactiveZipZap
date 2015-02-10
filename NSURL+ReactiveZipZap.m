@@ -142,4 +142,22 @@ ssize_t RZZSizeOfExtendedAttributesOfURL(NSURL *URL, NSError **error) {
     return result;
 }
 
+- (NSDictionary *)rzz_dictionaryWithExtendedAttributesOrError:(NSError **)error {
+    NSCAssert([self isFileURL], @"self needs to be a file URL");
+    NSArray *attributeNames = [self rzz_namesOfExtendedAttributesWithError:error];
+    NSMutableDictionary *result = nil;
+    if (attributeNames && attributeNames.count) {
+        result = [NSMutableDictionary dictionaryWithCapacity:attributeNames.count];
+        for (NSString *attributeName in attributeNames) {
+            NSData *value = [self rzz_valueForExtendedAttributeWithName:attributeName error:error];
+            if (!value) {
+                result = nil;
+                break;
+            }
+            result[attributeName] = value;
+        }
+    }
+    return result;
+}
+
 @end
