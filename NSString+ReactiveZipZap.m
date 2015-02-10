@@ -20,6 +20,10 @@
     return [self.stringByDeletingLastPathComponent stringByAppendingPathComponent:self.rzz_extendedAttributeTargetLastPathComponent];
 }
 
+- (NSString *)rzz_extendedAttributeLastPathComponent {
+    return [RZZXattrFilenamePrefix stringByAppendingString:self.lastPathComponent];
+}
+
 + (RACSignal *)rzz_temporaryPath {
     RACSignal *result = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         NSString *nonce = [NSString stringWithFormat:@"%.7f_%@", [[NSDate date] timeIntervalSinceReferenceDate], [[NSUUID UUID] UUIDString]];
