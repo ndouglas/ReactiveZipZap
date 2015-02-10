@@ -30,6 +30,12 @@
 @property (copy, nonatomic, readonly) NSString *rzz_extendedAttributePath;
 
 /**
+ The URL for an extended attributes file.
+ */
+
+@property (copy, nonatomic, readonly) NSURL *rzz_extendedAttributeURL;
+
+/**
  A URL to a temporary directory.
  
  

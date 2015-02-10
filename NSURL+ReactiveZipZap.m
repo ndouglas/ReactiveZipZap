@@ -27,6 +27,11 @@
     return [self.path rzz_extendedAttributePath];
 }
 
+- (NSURL *)rzz_extendedAttributeURL {
+    NSCAssert([self isFileURL], @"self needs to be a file URL");
+    return [NSURL fileURLWithPath:self.rzz_extendedAttributePath];
+}
+
 + (RACSignal *)rzz_temporaryURL {
     RACSignal *result = [[NSString rzz_temporaryPath]
     map:^NSURL *(NSString *path) {
