@@ -61,4 +61,14 @@
 
 - (NSArray *)rzz_namesOfExtendedAttributesWithError:(NSError **)error;
 
+/**
+ Sets the extended attribute with the specified name to the specified value.
+ 
+ @param value The value to set for the extended attribute.
+ @param name The name of the extended attribute.
+ @param error An error object populated in the event of failure.
+*/
+
+- (BOOL)rzz_setValue:(NSData *)_value forExtendedAttributeWithName:(NSString *)name error:(NSError **)error;
+
 @end
