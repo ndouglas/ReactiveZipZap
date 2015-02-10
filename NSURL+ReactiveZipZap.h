@@ -11,4 +11,13 @@
 
 @interface NSURL (ReactiveZipZap)
 
+/**
+ A URL to a temporary directory.
+ 
+ 
+ @return A signal passing a URL.
+ */
+
++ (RACSignal *)rzz_temporaryURL;
+
 @end

@@ -12,4 +12,12 @@
 
 @implementation NSURL (ReactiveZipZap)
 
++ (RACSignal *)rzz_temporaryURL {
+    RACSignal *result = [[NSString rzz_temporaryPath]
+    map:^NSURL *(NSString *path) {
+        return [NSURL fileURLWithPath:path];
+    }];
+    return [result setNameWithFormat:@"[%@ +rzz_temporaryURL]", self];
+}
+
 @end
