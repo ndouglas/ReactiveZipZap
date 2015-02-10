@@ -87,6 +87,18 @@
     return [result setNameWithFormat:@"[%@ +rzz_ephemeralArchiveWithEntriesFromSignal: %@]", self, signal];
 }
 
+- (RACSignal *)rzz_updateEntries:(NSArray *)entries {
+    RACSignal *result = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        NSError *error = nil;
+        if (![self updateEntries:entries.copy error:&error]) {
+            [subscriber sendError:error];
+        }
+        [subscriber sendCompleted];
+        return nil;
+    }];
+    return [result setNameWithFormat:@"[%@ -rzz_updateEntries: %@]", self, entries];
+}
+
 @end
 
 
