@@ -45,5 +45,13 @@
     return [result setNameWithFormat:@"[%@ +rzz_newArchiveAtURL: %@]", self, URL];
 }
 
++ (RACSignal *)rzz_mapNewArchiveForURLSignal:(RACSignal *)URLSignal {
+    RACSignal *result = [URLSignal
+        flattenMap:^RACSignal *(NSURL *URL) {
+            return [self rzz_newArchiveAtURL:URL];
+        }];
+    return [result setNameWithFormat:@"[%@ +rzz_mapNewArchiveForURLSignal: %@]", self, URLSignal];
+}
+
 
 
