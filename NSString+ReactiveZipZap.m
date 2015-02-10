@@ -17,7 +17,7 @@
 }
 
 - (NSString *)rzz_extendedAttributeTargetPath {
-    return [self stringByReplacingOccurrencesOfString:RZZXattrFilenamePrefix withString:@""];
+    return [self.stringByDeletingLastPathComponent stringByAppendingPathComponent:self.rzz_extendedAttributeTargetLastPathComponent];
 }
 
 + (RACSignal *)rzz_temporaryPath {
