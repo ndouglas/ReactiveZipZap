@@ -53,5 +53,10 @@
     return [result setNameWithFormat:@"[%@ +rzz_mapNewArchiveForURLSignal: %@]", self, URLSignal];
 }
 
++ (RACSignal *)rzz_temporaryArchive {
+    RACSignal *result = [self rzz_mapNewArchiveForURLSignal:[NSURL rzz_temporaryURL]];
+    return [result setNameWithFormat:@"[%@ +rzz_temporaryArchive]", self];
+}
+
 
 

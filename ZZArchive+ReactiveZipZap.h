@@ -29,4 +29,12 @@
 
 + (RACSignal *)rzz_newArchiveAtURL:(NSURL *)URL;
 
+/**
+ A new archive at a temporary location.
+ 
+ @return A signal passing an initialized instance of the class.
+ */
+
++ (RACSignal *)rzz_temporaryArchive;
+
 @end
