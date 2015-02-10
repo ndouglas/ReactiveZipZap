@@ -63,5 +63,7 @@
     return [result setNameWithFormat:@"[%@ +rzz_ephemeralArchive]", self];
 }
 
+@end
+
 
 
