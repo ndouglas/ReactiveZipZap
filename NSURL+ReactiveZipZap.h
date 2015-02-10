@@ -98,4 +98,14 @@
 
 - (NSDictionary *)rzz_dictionaryWithExtendedAttributesOrError:(NSError **)error;
 
+/**
+ Retrieves the dictionary of extended attributes with names and values.
+ 
+ @param dictionary A dictionary of extended attribute names and values.
+ @param error An error object populated in the event of failure.
+ */
+
+- (BOOL)rzz_setExtendedAttributesWithDictionary:(NSDictionary *)dictionary error:(NSError **)error;
+
 @end
+

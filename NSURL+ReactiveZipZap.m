@@ -160,4 +160,16 @@ ssize_t RZZSizeOfExtendedAttributesOfURL(NSURL *URL, NSError **error) {
     return result;
 }
 
+- (BOOL)rzz_setExtendedAttributesWithDictionary:(NSDictionary *)dictionary error:(NSError **)error {
+    NSCAssert([self isFileURL], @"self needs to be a file URL");
+    BOOL result = YES;
+    for (NSString *attributeName in dictionary) {
+        if (![self rzz_setValue:dictionary[attributeName] forExtendedAttributeWithName:attributeName error:error]) {
+            result = NO;
+            break;
+        }
+    }
+    return result;
+}
+
 @end
