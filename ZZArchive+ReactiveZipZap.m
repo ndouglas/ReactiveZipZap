@@ -63,6 +63,30 @@
     return [result setNameWithFormat:@"[%@ +rzz_ephemeralArchive]", self];
 }
 
++ (RACSignal *)rzz_archiveFromSignal:(RACSignal *)archiveSignal addEntriesFromSignal:(RACSignal *)entriesSignal {
+    RACSignal *result = [archiveSignal
+        flattenMap:^RACSignal *(ZZArchive *archive) {
+            NSMutableArray *entries = [NSMutableArray array];
+            RACSignal *result = [[entriesSignal
+                doNext:^(ZZArchiveEntry *archiveEntry) {
+                    [entries addObject:archiveEntry];
+                }]
+                concat:[archive rzz_updateEntries:entries]];
+            return result;
+        }];
+    return [result setNameWithFormat:@"[%@ +rzz_archiveFromSignal: %@ addEntriesFromSignal: %@]", self, archiveSignal, entriesSignal];
+}
+
++ (RACSignal *)rzz_temporaryArchiveWithEntriesFromSignal:(RACSignal *)signal {
+    RACSignal *result = [self rzz_archiveFromSignal:[self rzz_temporaryArchive] addEntriesFromSignal:signal];
+    return [result setNameWithFormat:@"[%@ +rzz_temporaryArchiveWithEntriesFromSignal: %@]", self, signal];
+}
+
++ (RACSignal *)rzz_ephemeralArchiveWithEntriesFromSignal:(RACSignal *)signal {
+    RACSignal *result = [self rzz_archiveFromSignal:[self rzz_ephemeralArchive] addEntriesFromSignal:signal];
+    return [result setNameWithFormat:@"[%@ +rzz_ephemeralArchiveWithEntriesFromSignal: %@]", self, signal];
+}
+
 @end
 
 
