@@ -12,6 +12,10 @@
 
 @implementation NSString (ReactiveZipZap)
 
+- (NSString *)rzz_extendedAttributeTargetPath {
+    return [self stringByReplacingOccurrencesOfString:RZZXattrFilenamePrefix withString:@""];
+}
+
 + (RACSignal *)rzz_temporaryPath {
     RACSignal *result = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         NSString *nonce = [NSString stringWithFormat:@"%.7f_%@", [[NSDate date] timeIntervalSinceReferenceDate], [[NSUUID UUID] UUIDString]];

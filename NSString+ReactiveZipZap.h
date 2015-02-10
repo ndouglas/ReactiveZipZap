@@ -12,6 +12,12 @@
 @interface NSString (ReactiveZipZap)
 
 /**
+ The path for an extended attributes target.
+ */
+
+@property (copy, nonatomic, readonly) NSString *rzz_extendedAttributeTargetPath;
+
+/**
  A path to a temporary directory.
  
  
