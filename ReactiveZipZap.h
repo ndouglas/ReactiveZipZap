@@ -8,6 +8,7 @@
 //
 
 #import "RZZDefinitions.h"
+#import "NSDictionary+ReactiveZipZap.h"
 #import "NSString+ReactiveZipZap.h"
 #import "NSURL+ReactiveZipZap.h"
 #import "ZZArchive+ReactiveZipZap.h"
