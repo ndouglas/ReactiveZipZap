@@ -12,4 +12,20 @@
 
 @implementation ZZArchive (ReactiveZipZap)
 
-@end
++ (RACSignal *)rzz_archiveAtURL:(NSURL *)URL {
+    RACSignal *result = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        NSError *error = nil;
+        ZZArchive *archive = [ZZArchive archiveWithURL:URL error:&error];
+        if (archive) {
+            [subscriber sendNext:archive];
+        } else {
+            [subscriber sendError:error];
+        }
+        [subscriber sendCompleted];
+        return nil;
+    }];
+    return [result setNameWithFormat:@"[%@ +rzz_newArchiveAtURL: %@]", self, URL];
+}
+
+
+

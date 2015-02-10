@@ -11,4 +11,13 @@
 
 @interface ZZArchive (ReactiveZipZap)
 
+/**
+ The archive at the specified URL, if it exists.
+ 
+ @param URL The URL at which the archive should be found.
+ @return An initialized instance of the class.
+ */
+
++ (RACSignal *)rzz_archiveAtURL:(NSURL *)URL;
+
 @end
