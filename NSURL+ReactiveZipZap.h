@@ -53,4 +53,12 @@
 
 + (RACSignal *)rzz_ephemeralURL;
 
+/**
+ Fetches the names of the extended attributes.
+ 
+ @param error An error object populated in the event of failure.
+ */
+
+- (NSArray *)rzz_namesOfExtendedAttributesWithError:(NSError **)error;
+
 @end

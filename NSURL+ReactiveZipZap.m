@@ -9,6 +9,8 @@
 
 #import "NSURL+ReactiveZipZap.h"
 #import "ReactiveZipZap.h"
+#import <sys/xattr.h>
+#import <unistd.h>
 
 @implementation NSURL (ReactiveZipZap)
 
@@ -46,6 +48,53 @@
         return [NSURL fileURLWithPath:path];
     }];
     return [result setNameWithFormat:@"[%@ +rzz_ephemeralURL]", self];
+}
+
+static int RZZXattrOptions = XATTR_NOFOLLOW | XATTR_SHOWCOMPRESSION;
+
+static inline NSError *RZZErrorForPOSIXErrorAtURL(int posixError, NSURL *URL) {
+    return [NSError errorWithDomain:NSPOSIXErrorDomain code:posixError userInfo:@{
+        NSLocalizedDescriptionKey : @(strerror(posixError)) ?: NSLocalizedString(@"An unknown error occurred.", nil),
+        NSURLErrorKey : URL ?: [NSNull null],
+    }];
+}
+
+ssize_t RZZSizeOfExtendedAttributesOfURL(NSURL *URL, NSError **error) {
+    ssize_t result = listxattr(URL.path.fileSystemRepresentation, NULL, SIZE_MAX, RZZXattrOptions);
+    if (result == -1 && error) {
+        *error = RZZErrorForPOSIXErrorAtURL(errno, URL);
+    }
+    return result;
+}
+
+- (NSArray *)rzz_namesOfExtendedAttributesWithError:(NSError **)error {
+    NSCAssert([self isFileURL], @"self needs to be a file URL");
+    NSMutableArray *result = nil;
+    ssize_t size = RZZSizeOfExtendedAttributesOfURL(self, error);
+    if (size != -1) {
+        if (size) {
+            void *names = calloc(1, size);
+            size = listxattr(self.path.fileSystemRepresentation, names, size, RZZXattrOptions);
+            if (size && size != -1) {
+                result = [NSMutableArray array];
+                uintptr_t start = (uintptr_t)names;
+                uintptr_t thisName = start;
+                for (ssize_t i = 0; i < size; i++) {
+                    uintptr_t current = start + i;
+                    if (current && *((char *)current) == 0x0) {
+                        [result addObject:@((char *)thisName)];
+                        start = current + 1;
+                    }
+                }
+            } else if (size == -1 && error) {
+                *error = RZZErrorForPOSIXErrorAtURL(errno, self);
+            }
+            if (names) {
+                free(names);
+            }
+        }
+    }
+    return result;
 }
 
 @end
