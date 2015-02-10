@@ -12,6 +12,11 @@
 
 @implementation NSURL (ReactiveZipZap)
 
+- (NSURL *)rzz_extendedAttributeTargetURL {
+    NSCAssert([self isFileURL], @"self needs to be a file URL");
+    return [NSURL fileURLWithPath:[self.path rzz_extendedAttributeTargetPath]];
+}
+
 + (RACSignal *)rzz_temporaryURL {
     RACSignal *result = [[NSString rzz_temporaryPath]
     map:^NSURL *(NSString *path) {

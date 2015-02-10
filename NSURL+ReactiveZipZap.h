@@ -12,6 +12,12 @@
 @interface NSURL (ReactiveZipZap)
 
 /**
+ The URL for the target of this extended attribute file URL.
+ */
+
+@property (copy, nonatomic, readonly) NSURL *rzz_extendedAttributeTargetURL;
+
+/**
  A URL to a temporary directory.
  
  
