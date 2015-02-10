@@ -1,5 +1,5 @@
 //
-//  ReactiveZipZap.h
+//  NSURL+ReactiveZipZap.h
 //  ReactiveZipZap
 //
 //  Created by Nathan Douglas on 2/10/15.
@@ -8,6 +8,7 @@
 //
 
 #import "RZZDefinitions.h"
-#import "NSString+ReactiveZipZap.h"
-#import "NSURL+ReactiveZipZap.h"
-#import "ZZArchive+ReactiveZipZap.h"
+
+@interface NSURL (ReactiveZipZap)
+
+@end
