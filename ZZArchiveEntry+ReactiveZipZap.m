@@ -69,5 +69,20 @@
         setNameWithFormat:@"[%@ +zz_archiveEntryOfDirectoryAtURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
 }
 
++ (RACSignal *)rzz_archiveEntriesOfDirectoryContentsAtURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes {
+    NSError *error = nil;
+    NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:URL includingPropertiesForKeys:nil options:0 error:&error];
+    RACSignal *result = nil;
+    if (contents) {
+        result = [contents.rac_sequence.signal
+            flattenMap:^RACSignal *(NSURL *contentURL) {
+                return [self rzz_archiveEntriesOfItemAtURL:contentURL includeExtendedAttributes:includeExtendedAttributes];
+            }];
+    } else {
+        result = [RACSignal error:error];
+    }
+    return [result setNameWithFormat:@"[%@ +zz_archiveEntriesOfDirectoryContentsAtURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
+}
+
 
 @end
