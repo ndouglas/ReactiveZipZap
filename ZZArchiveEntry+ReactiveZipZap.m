@@ -22,5 +22,10 @@
         setNameWithFormat:@"[%@ zz_archiveEntryWithFileName: %@ compress: %@ dataBlock: %@]", self, fileName, @(compress), dataBlock];
 }
 
++ (RACSignal *)rzz_archiveEntryWithFileName:(NSString *)fileName compress:(BOOL)compress dataConsumerBlock:(BOOL(^)(CGDataConsumerRef dataConsumer, NSError** error))dataConsumerBlock {
+    return [[RACSignal return:[self archiveEntryWithFileName:fileName compress:compress dataConsumerBlock:dataConsumerBlock]]
+        setNameWithFormat:@"[%@ zz_archiveEntryWithFileName: %@ compress: %@ dataConsumerBlock: %@]", self, fileName, @(compress), dataConsumerBlock];
+}
+
 
 @end

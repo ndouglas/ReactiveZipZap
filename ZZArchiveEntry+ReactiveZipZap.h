@@ -33,5 +33,16 @@
 
 + (RACSignal *)rzz_archiveEntryWithFileName:(NSString *)fileName compress:(BOOL)compress dataBlock:(NSData *(^)(NSError** error))dataBlock;
 
+/**
+ An archive entry with a specified filename, compression flag, and data consumer block.
+ 
+ @param fileName The name for this archive entry.
+ @param compress Whether the archive entry should be compressed.
+ @param dataConsumerBlock A block that passes the entry file to the data consumer.
+ @return A signal containing the archive entry, or an error if one occurred.
+ */
+
++ (RACSignal *)rzz_archiveEntryWithFileName:(NSString *)fileName compress:(BOOL)compress dataConsumerBlock:(BOOL(^)(CGDataConsumerRef dataConsumer, NSError** error))dataConsumerBlock;
+
 
 @end
