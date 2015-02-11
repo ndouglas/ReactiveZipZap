@@ -16,27 +16,54 @@
 @property (copy, nonatomic, readwrite) NSString *ephemeralPath;
 @end
 
+@interface NSString ()
++ (NSString *)rzz_pathToTemporaryArea;
+@end
+
 @implementation NSString_ReactiveZipZapTests
 @synthesize temporaryPath;
 @synthesize ephemeralPath;
 
 - (void)setUp {
 	[super setUp];
-    self.temporaryPath = [[NSString rzz_temporaryPath] first];
-    self.ephemeralPath = [[NSString rzz_ephemeralPath] first];
 }
 
 - (void)tearDown {
-    [[NSFileManager defaultManager] removeItemAtPath:self.temporaryPath error:NULL];
 	[super tearDown];
 }
 
 - (void)testTemporaryPath {
+    self.temporaryPath = [[NSString rzz_temporaryPath] first];
     XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:self.temporaryPath]);
+    [[NSFileManager defaultManager] removeItemAtPath:self.temporaryPath error:NULL];
+    XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:self.temporaryPath]);
 }
 
 - (void)testEphemeralPath {
+    self.ephemeralPath = [[NSString rzz_ephemeralPath] first];
     XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:self.ephemeralPath]);
+}
+
+- (void)testCleanTemporaryAreaOrError {
+    for (int i = 0; i < 50; i++) {
+        [[NSString rzz_temporaryPath] first];
+    }
+    NSError *error = nil;
+    XCTAssertTrue([NSString rzz_cleanTemporaryAreaOrError:&error]);
+    XCTAssertNotNil([[NSFileManager defaultManager] contentsOfDirectoryAtPath:[NSString rzz_pathToTemporaryArea] error:&error]);
+    XCTAssertTrue([[[NSFileManager defaultManager] contentsOfDirectoryAtPath:[NSString rzz_pathToTemporaryArea] error:&error] count] == 0);
+}
+
+- (void)testCleanTemporaryAreaOfItemsOlderThanDateError {
+    for (int i = 0; i < 50; i++) {
+        [[NSString rzz_temporaryPath] first];
+    }
+    NSError *error = nil;
+    XCTAssertNotNil([[NSFileManager defaultManager] contentsOfDirectoryAtPath:[NSString rzz_pathToTemporaryArea] error:&error]);
+    XCTAssertTrue([[[NSFileManager defaultManager] contentsOfDirectoryAtPath:[NSString rzz_pathToTemporaryArea] error:&error] count] == 50);
+    XCTAssertTrue([NSString rzz_cleanTemporaryAreaOfItemsOlderThanDate:[NSDate date] error:&error]);
+    XCTAssertNotNil([[NSFileManager defaultManager] contentsOfDirectoryAtPath:[NSString rzz_pathToTemporaryArea] error:&error]);
+    XCTAssertTrue([[[NSFileManager defaultManager] contentsOfDirectoryAtPath:[NSString rzz_pathToTemporaryArea] error:&error] count] == 0);
 }
 
 @end
