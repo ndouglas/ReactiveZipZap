@@ -21,20 +21,21 @@
 
 - (void)setUp {
 	[super setUp];
-    self.temporaryURL = [[NSURL rzz_temporaryURL] first];
-    self.ephemeralURL = [[NSURL rzz_ephemeralURL] first];
 }
 
 - (void)tearDown {
-    [[NSFileManager defaultManager] removeItemAtURL:self.temporaryURL error:NULL];
 	[super tearDown];
 }
 
 - (void)testTemporaryURL {
+    self.temporaryURL = [[NSURL rzz_temporaryURL] first];
     XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:self.temporaryURL.path]);
+    [[NSFileManager defaultManager] removeItemAtURL:self.temporaryURL error:NULL];
+    XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:self.temporaryURL.path]);
 }
 
 - (void)testEphemeralURL {
+    self.ephemeralURL = [[NSURL rzz_ephemeralURL] first];
     XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:self.ephemeralURL.path]);
 }
 
