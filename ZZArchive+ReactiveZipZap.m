@@ -122,7 +122,8 @@
 - (RACSignal *)rzz_unarchiveToTemporaryURL {
     RACSignal *result = [[NSURL rzz_temporaryURL]
         flattenMap:^RACSignal *(NSURL *URL) {
-            return [self rzz_unarchiveToURL:URL];
+            return [[self rzz_unarchiveToURL:URL]
+            concat:[RACSignal return:URL]];
         }];
     return [result setNameWithFormat:@"[%@ -rzz_unarchiveToTemporaryURL]", self];
 }
@@ -130,7 +131,8 @@
 - (RACSignal *)rzz_unarchiveToEphemeralURL {
     RACSignal *result = [[NSURL rzz_ephemeralURL]
         flattenMap:^RACSignal *(NSURL *URL) {
-            return [self rzz_unarchiveToURL:URL];
+            return [[self rzz_unarchiveToURL:URL]
+            concat:[RACSignal return:URL]];
         }];
     return [result setNameWithFormat:@"[%@ -rzz_unarchiveToTemporaryURL]", self];
 }

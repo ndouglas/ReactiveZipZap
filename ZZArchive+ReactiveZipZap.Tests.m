@@ -39,10 +39,6 @@
 - (void)testEphemeralArchive {
     __block NSString *path = nil;
     __block NSURL *URL = nil;
-	RACDisposable *disposable = [RACDisposable disposableWithBlock:^{
-        XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:path]);
-        XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:URL.path]);
-    }];
     [[[[[[ZZArchive rzz_ephemeralArchive]
         map:^ZZArchive *(ZZArchive *archive) {
             XCTAssertNotNil(archive);
@@ -80,17 +76,12 @@
             XCTAssertNotNil(path);
             XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:path]);
             XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:URL.path]);
-            [disposable dispose];
         }];
 }
 
 - (void)testTemporaryArchiveWithContentsOfURLIncludeExtendedAttributes {
     __block NSString *path = nil;
     __block NSURL *URL = nil;
-	RACDisposable *disposable = [RACDisposable disposableWithBlock:^{
-        XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:path]);
-        XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:URL.path]);
-    }];
     [[[[[ZZArchive rzz_temporaryArchiveWithContentsOfURL:[NSURL fileURLWithPath:@(__FILE__)] includeExtendedAttributes:YES]
         doNext:^(ZZArchive *archive) {
             path = archive.URL.path;
@@ -119,17 +110,12 @@
             XCTAssertNotNil(path);
             XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:path]);
             XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:URL.path]);
-            [disposable dispose];
         }];
 }
 
 - (void)testEphemeralArchiveWithContentsOfURLIncludeExtendedAttributes {
     __block NSString *path = nil;
     __block NSURL *URL = nil;
-	RACDisposable *disposable = [RACDisposable disposableWithBlock:^{
-        XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:path]);
-        XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:URL.path]);
-    }];
     [[[[[ZZArchive rzz_ephemeralArchiveWithContentsOfURL:[NSURL fileURLWithPath:@(__FILE__)] includeExtendedAttributes:YES]
         doNext:^(ZZArchive *archive) {
             path = archive.URL.path;
@@ -158,14 +144,56 @@
             XCTAssertNotNil(path);
             XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:path]);
             XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:URL.path]);
-            [disposable dispose];
         }];
+}
+
+- (void)testUnarchiveToURL {
+    NSError *error = nil;
+    NSURL *URL = [[NSURL rzz_temporaryURL] first];
+    XCTAssertTrue([[[ZZArchive rzz_ephemeralArchiveWithContentsOfURL:[NSURL fileURLWithPath:@(__FILE__)] includeExtendedAttributes:YES]
+        flattenMap:^RACSignal *(ZZArchive *archive) {
+            return [archive rzz_unarchiveToURL:URL];
+        }]
+        waitUntilCompleted:&error]);
+    NSString *newPath = [URL.path stringByAppendingPathComponent:[@(__FILE__) lastPathComponent]];
+    XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:newPath]);
+}
+
+- (void)testUnarchiveToTemporaryURL {
+    NSError *error = nil;
+    __block NSURL *URL = nil;
+    XCTAssertTrue([[[[ZZArchive rzz_ephemeralArchiveWithContentsOfURL:[NSURL fileURLWithPath:@(__FILE__)] includeExtendedAttributes:YES]
+        flattenMap:^RACSignal *(ZZArchive *archive) {
+            return [archive rzz_unarchiveToTemporaryURL];
+        }]
+        doNext:^(NSURL *temporaryURL) {
+            URL = temporaryURL;
+        }]
+        waitUntilCompleted:&error]);
+    NSString *newPath = [URL.path stringByAppendingPathComponent:[@(__FILE__) lastPathComponent]];
+    XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:newPath]);
+}
+
+- (void)testUnarchiveToEphemeralURL {
+    NSError *error = nil;
+    __block NSURL *URL = nil;
+    BOOL success = [[[[ZZArchive rzz_ephemeralArchiveWithContentsOfURL:[NSURL fileURLWithPath:@(__FILE__)] includeExtendedAttributes:YES]
+        flattenMap:^RACSignal *(ZZArchive *archive) {
+            URL = archive.URL;
+            XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:URL.path]);
+            return [archive rzz_unarchiveToEphemeralURL];
+        }]
+        doNext:^(NSURL *ephemeralURL) {
+            URL = ephemeralURL;
+        }]
+        waitUntilCompleted:&error];
+    XCTAssertTrue(success);
+    NSString *newPath = [URL.path stringByAppendingPathComponent:[@(__FILE__) lastPathComponent]];
+    XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:newPath]);
 }
 
 @end
 
 /**
-- (RACSignal *)rzz_unarchiveToURL:(NSURL *)URL;
-- (RACSignal *)rzz_unarchiveToTemporaryURL;
 - (RACSignal *)rzz_unarchiveToEphemeralURL;
 */
