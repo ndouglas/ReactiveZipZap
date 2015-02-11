@@ -84,4 +84,12 @@
 
 - (RACSignal *)rzz_unarchiveToTemporaryURL;
 
+/**
+ Writes out the archive's entries to a ephemeral URL.
+ 
+ @return A signal that completes when the entries are written, or returns an error if one occurred.
+ */
+
+- (RACSignal *)rzz_unarchiveToEphemeralURL;
+
 @end

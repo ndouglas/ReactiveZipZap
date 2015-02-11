@@ -125,8 +125,12 @@
     return [result setNameWithFormat:@"[%@ -rzz_unarchiveToTemporaryURL]", self];
 }
 
+- (RACSignal *)rzz_unarchiveToEphemeralURL {
+    RACSignal *result = [[NSURL rzz_ephemeralURL]
+        flattenMap:^RACSignal *(NSURL *URL) {
+            return [self rzz_unarchiveToURL:URL];
         }];
-    return [result setNameWithFormat:@"[%@ -rzz_writeEntriesToURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
+    return [result setNameWithFormat:@"[%@ -rzz_unarchiveToTemporaryURL]", self];
 }
 
 - (RACSignal *)rzz_writeItemEntriesToURL:(NSURL *)URL {
