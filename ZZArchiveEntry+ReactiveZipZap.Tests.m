@@ -28,7 +28,7 @@
 
 - (ZZArchiveEntry *)oldArchiveEntryForNewArchiveEntry:(ZZArchiveEntry *)archiveEntry {
     NSError *error = nil;
-    NSURL *URL = [[[NSURL rzz_temporaryURL] first] URLByAppendingPathComponent:@"test"];
+    NSURL *URL = [[NSURL rzz_temporaryURLOrError:NULL] URLByAppendingPathComponent:@"test"];
     ZZArchive *archive = [[ZZArchive rzz_newArchiveAtURL:URL] first];
     XCTAssertTrue([archive updateEntries:@[archiveEntry] error:&error]);
     ZZArchiveEntry *result = [[archive entries] firstObject];
@@ -43,7 +43,7 @@
 }
 
 - (void)testArchiveEntryOfFileAtURL {
-    NSURL *URL = [[[NSURL rzz_temporaryURL] first] URLByAppendingPathComponent:@"test"];
+    NSURL *URL = [[NSURL rzz_temporaryURLOrError:NULL] URLByAppendingPathComponent:@"test"];
     NSError *error = nil;
     ZZArchiveEntry *archiveEntry = [[ZZArchiveEntry rzz_archiveEntryOfFileAtURL:[NSURL fileURLWithPath:@(__FILE__)]] first];
     XCTAssertTrue([[[self oldArchiveEntryForNewArchiveEntry:archiveEntry] rzz_writeToURL:URL] waitUntilCompleted:&error]);
@@ -86,7 +86,7 @@
         fileEntry = archiveEntries[1];
         xattrEntry = archiveEntries[0];
     }
-    NSURL *URL = [[[NSURL rzz_temporaryURL] first] URLByAppendingPathComponent:@"test"];
+    NSURL *URL = [[NSURL rzz_temporaryURLOrError:NULL] URLByAppendingPathComponent:@"test"];
     XCTAssertTrue([[fileEntry rzz_writeToURL:URL] waitUntilCompleted:&error]);
     XCTAssertTrue([[xattrEntry rzz_writeAsExtendedAttributesToURL:URL] waitUntilCompleted:&error]);
     NSData *data2 = [NSData dataWithContentsOfURL:URL];
@@ -119,7 +119,7 @@
         fileEntry = archiveEntries[1];
         xattrEntry = archiveEntries[0];
     }
-    NSURL *URL = [[[NSURL rzz_temporaryURL] first] URLByAppendingPathComponent:@"test"];
+    NSURL *URL = [[NSURL rzz_temporaryURLOrError:NULL] URLByAppendingPathComponent:@"test"];
     XCTAssertTrue([[fileEntry rzz_writeToURL:URL] waitUntilCompleted:&error]);
     XCTAssertTrue([[xattrEntry rzz_writeAsExtendedAttributesToURL:URL] waitUntilCompleted:&error]);
     NSDictionary *extendedAttributes2 = [URL rzz_dictionaryWithExtendedAttributesOrError:&error];
@@ -166,7 +166,7 @@
         fileEntry = archiveEntries[1];
         xattrEntry = archiveEntries[0];
     }
-    NSURL *URL = [[[NSURL rzz_temporaryURL] first] URLByAppendingPathComponent:@"test"];
+    NSURL *URL = [[NSURL rzz_temporaryURLOrError:NULL] URLByAppendingPathComponent:@"test"];
     XCTAssertTrue([[fileEntry rzz_writeToURL:URL] waitUntilCompleted:&error]);
     XCTAssertTrue([[xattrEntry rzz_writeAsExtendedAttributesToURL:URL] waitUntilCompleted:&error]);
     NSData *data2 = [NSData dataWithContentsOfURL:URL];
@@ -196,7 +196,7 @@
         fileEntry = archiveEntries[1];
         xattrEntry = archiveEntries[0];
     }
-    URL = [[[NSURL rzz_temporaryURL] first] URLByAppendingPathComponent:@"test"];
+    URL = [[NSURL rzz_temporaryURLOrError:NULL] URLByAppendingPathComponent:@"test"];
     XCTAssertTrue([[fileEntry rzz_writeToURL:URL] waitUntilCompleted:&error]);
     XCTAssertTrue([[xattrEntry rzz_writeAsExtendedAttributesToURL:URL] waitUntilCompleted:&error]);
     extendedAttributes2 = [URL rzz_dictionaryWithExtendedAttributesOrError:&error];

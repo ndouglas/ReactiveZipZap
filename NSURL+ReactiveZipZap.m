@@ -42,20 +42,8 @@
     return [NSURL fileURLWithPath:self.rzz_extendedAttributePath];
 }
 
-+ (RACSignal *)rzz_temporaryURL {
-    RACSignal *result = [[NSString rzz_temporaryPath]
-    map:^NSURL *(NSString *path) {
-        return [NSURL fileURLWithPath:path];
-    }];
-    return [result setNameWithFormat:@"[%@ +rzz_temporaryURL]", self];
-}
-
-+ (RACSignal *)rzz_ephemeralURL {
-    RACSignal *result = [[NSString rzz_ephemeralPath]
-    map:^NSURL *(NSString *path) {
-        return [NSURL fileURLWithPath:path];
-    }];
-    return [result setNameWithFormat:@"[%@ +rzz_ephemeralURL]", self];
++ (NSURL *)rzz_temporaryURLOrError:(NSError **)error {
+    return [NSURL fileURLWithPath:[NSString rzz_temporaryPathOrError:error]];
 }
 
 static int RZZXattrOptions = XATTR_NOFOLLOW | XATTR_SHOWCOMPRESSION;

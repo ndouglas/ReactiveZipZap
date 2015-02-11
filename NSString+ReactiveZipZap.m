@@ -54,41 +54,14 @@
     return [self.stringByDeletingLastPathComponent stringByAppendingPathComponent:self.rzz_extendedAttributeLastPathComponent];
 }
 
-+ (RACSignal *)rzz_temporaryPath {
-    RACSignal *result = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        NSString *nonce = [NSString stringWithFormat:@"%.7f_%@", [[NSDate date] timeIntervalSinceReferenceDate], [[NSUUID UUID] UUIDString]];
-        NSString *path = [[self rzz_pathToTemporaryArea] stringByAppendingPathComponent:nonce];
-        NSError *error = nil;
-        if ([[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error]) {
-            [subscriber sendNext:path];
-        } else {
-            [subscriber sendError:error];
-        }
-        [subscriber sendCompleted];
-        return nil;
-    }];
-    return [result setNameWithFormat:@"[ %@ +rzz_temporaryPath]", self];
-}
-
-+ (RACSignal *)rzz_ephemeralPath {
-    RACSignal *result = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        NSString *nonce = [NSString stringWithFormat:@"%.7f_%@", [[NSDate date] timeIntervalSinceReferenceDate], [[NSUUID UUID] UUIDString]];
-        NSString *path = [[self rzz_pathToTemporaryArea] stringByAppendingPathComponent:nonce];
-        NSError *error = nil;
-        if ([[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error]) {
-            [subscriber sendNext:path];
-        } else {
-            [subscriber sendError:error];
-        }
-        [subscriber sendCompleted];
-        return [RACDisposable disposableWithBlock:^{
-            NSError *error = nil;
-            if (![[NSFileManager defaultManager] removeItemAtPath:path error:&error]) {
-                NSLog(@"Failed to remove item at path '%@': %@", path, error);
-            }
-        }];
-    }];
-    return [result setNameWithFormat:@"[ %@ +rzz_ephemeralPath]", self];
++ (NSString *)rzz_temporaryPathOrError:(NSError **)error {
+    NSString *nonce = [NSString stringWithFormat:@"%.7f_%@", [[NSDate date] timeIntervalSinceReferenceDate], [[NSUUID UUID] UUIDString]];
+    NSString *path = [[self rzz_pathToTemporaryArea] stringByAppendingPathComponent:nonce];
+    NSString *result = nil;
+    if ([[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:error]) {
+        result = path;
+    };
+    return result;
 }
 
 @end

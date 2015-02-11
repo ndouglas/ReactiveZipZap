@@ -59,19 +59,11 @@
 /**
  A path to a temporary directory.
  
- 
- @return A signal passing a path.
+ @param error An error object populated in the event of failure.
+ @return A path to a temporary directory.
+ @discussion It is the caller's responsibility to remove the directory.
  */
 
-+ (RACSignal *)rzz_temporaryPath;
-
-/**
- A path to a temporary directory that is created and then deleted when the subscription is disposed.
- 
- 
- @return A signal passing a path that will be deleted when the subscription is disposed of.
- */
-
-+ (RACSignal *)rzz_ephemeralPath;
++ (NSString *)rzz_temporaryPathOrError:(NSError **)error;
 
 @end

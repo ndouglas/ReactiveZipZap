@@ -11,13 +11,9 @@
 #import "ReactiveZipZap.h"
 
 @interface NSURL_ReactiveZipZapTests : XCTestCase
-@property (copy, nonatomic, readwrite) NSURL *temporaryURL;
-@property (copy, nonatomic, readwrite) NSURL *ephemeralURL;
 @end
 
 @implementation NSURL_ReactiveZipZapTests
-@synthesize temporaryURL;
-@synthesize ephemeralURL;
 
 - (void)setUp {
 	[super setUp];
@@ -28,15 +24,10 @@
 }
 
 - (void)testTemporaryURL {
-    self.temporaryURL = [[NSURL rzz_temporaryURL] first];
-    XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:self.temporaryURL.path]);
-    [[NSFileManager defaultManager] removeItemAtURL:self.temporaryURL error:NULL];
-    XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:self.temporaryURL.path]);
-}
-
-- (void)testEphemeralURL {
-    self.ephemeralURL = [[NSURL rzz_ephemeralURL] first];
-    XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:self.ephemeralURL.path]);
+    NSURL *temporaryURL = [NSURL rzz_temporaryURLOrError:NULL];
+    XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:temporaryURL.path]);
+    [[NSFileManager defaultManager] removeItemAtURL:temporaryURL error:NULL];
+    XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:temporaryURL.path]);
 }
 
 - (void)testNamesOfExtendedAttributesWithError {

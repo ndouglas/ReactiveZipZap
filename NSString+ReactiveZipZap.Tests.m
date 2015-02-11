@@ -12,8 +12,6 @@
 
 @interface NSString_ReactiveZipZapTests : XCTestCase {
 }
-@property (copy, nonatomic, readwrite) NSString *temporaryPath;
-@property (copy, nonatomic, readwrite) NSString *ephemeralPath;
 @end
 
 @interface NSString ()
@@ -21,8 +19,6 @@
 @end
 
 @implementation NSString_ReactiveZipZapTests
-@synthesize temporaryPath;
-@synthesize ephemeralPath;
 
 - (void)setUp {
 	[super setUp];
@@ -33,20 +29,15 @@
 }
 
 - (void)testTemporaryPath {
-    self.temporaryPath = [[NSString rzz_temporaryPath] first];
-    XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:self.temporaryPath]);
-    [[NSFileManager defaultManager] removeItemAtPath:self.temporaryPath error:NULL];
-    XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:self.temporaryPath]);
-}
-
-- (void)testEphemeralPath {
-    self.ephemeralPath = [[NSString rzz_ephemeralPath] first];
-    XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:self.ephemeralPath]);
+    NSString *temporaryPath = [NSString rzz_temporaryPathOrError:NULL];
+    XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:temporaryPath]);
+    [[NSFileManager defaultManager] removeItemAtPath:temporaryPath error:NULL];
+    XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:temporaryPath]);
 }
 
 - (void)testCleanTemporaryAreaOrError {
     for (int i = 0; i < 50; i++) {
-        [[NSString rzz_temporaryPath] first];
+        [NSString rzz_temporaryPathOrError:NULL];
     }
     NSError *error = nil;
     XCTAssertTrue([NSString rzz_cleanTemporaryAreaOrError:&error]);
@@ -56,7 +47,7 @@
 
 - (void)testCleanTemporaryAreaOfItemsOlderThanDateError {
     for (int i = 0; i < 50; i++) {
-        [[NSString rzz_temporaryPath] first];
+        [NSString rzz_temporaryPathOrError:NULL];
     }
     NSError *error = nil;
     XCTAssertNotNil([[NSFileManager defaultManager] contentsOfDirectoryAtPath:[NSString rzz_pathToTemporaryArea] error:&error]);

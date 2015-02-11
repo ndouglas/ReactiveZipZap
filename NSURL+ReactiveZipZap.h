@@ -60,19 +60,12 @@
  A URL to a temporary directory.
  
  
- @return A signal passing a URL.
+ @param error An error object populated in the event of failure.
+ @return A path to a temporary directory.
+ @discussion It is the caller's responsibility to remove the directory.
  */
 
-+ (RACSignal *)rzz_temporaryURL;
-
-/**
- A URL to a temporary directory that is created and then deleted when the subscription is disposed.
- 
- 
- @return A signal passing a URL that will be deleted when the subscription is disposed of.
- */
-
-+ (RACSignal *)rzz_ephemeralURL;
++ (NSURL *)rzz_temporaryURLOrError:(NSError **)error;
 
 /**
  Fetches the names of the extended attributes.

@@ -45,22 +45,11 @@
     return [result setNameWithFormat:@"[%@ +rzz_newArchiveAtURL: %@]", self, URL];
 }
 
-+ (RACSignal *)rzz_mapNewArchiveForURLSignal:(RACSignal *)URLSignal {
-    RACSignal *result = [URLSignal
-        flattenMap:^RACSignal *(NSURL *URL) {
-            return [self rzz_newArchiveAtURL:[URL URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]]];
-        }];
-    return [result setNameWithFormat:@"[%@ +rzz_mapNewArchiveForURLSignal: %@]", self, URLSignal];
-}
-
 + (RACSignal *)rzz_temporaryArchive {
-    RACSignal *result = [self rzz_mapNewArchiveForURLSignal:[NSURL rzz_temporaryURL]];
+    NSError *error = nil;
+    NSURL *URL = [NSURL rzz_temporaryURLOrError:&error];
+    RACSignal *result = URL ? [self rzz_newArchiveAtURL:[URL URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]]] : [RACSignal error:error];
     return [result setNameWithFormat:@"[%@ +rzz_temporaryArchive]", self];
-}
-
-+ (RACSignal *)rzz_ephemeralArchive {
-    RACSignal *result = [self rzz_mapNewArchiveForURLSignal:[NSURL rzz_ephemeralURL]];
-    return [result setNameWithFormat:@"[%@ +rzz_ephemeralArchive]", self];
 }
 
 + (RACSignal *)rzz_archiveFromSignal:(RACSignal *)archiveSignal addEntriesFromSignal:(RACSignal *)entriesSignal {
@@ -84,19 +73,9 @@
     return [result setNameWithFormat:@"[%@ +rzz_temporaryArchiveWithEntriesFromSignal: %@]", self, signal];
 }
 
-+ (RACSignal *)rzz_ephemeralArchiveWithEntriesFromSignal:(RACSignal *)signal {
-    RACSignal *result = [self rzz_archiveFromSignal:[self rzz_ephemeralArchive] addEntriesFromSignal:signal];
-    return [result setNameWithFormat:@"[%@ +rzz_ephemeralArchiveWithEntriesFromSignal: %@]", self, signal];
-}
-
 + (RACSignal *)rzz_temporaryArchiveWithContentsOfURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes {
     RACSignal *result = [self rzz_temporaryArchiveWithEntriesFromSignal:[ZZArchiveEntry rzz_archiveEntriesOfItemAtURL:URL includeExtendedAttributes:includeExtendedAttributes]];
     return [result setNameWithFormat:@"[%@ +rzz_temporaryArchiveWithContentsOfURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
-}
-
-+ (RACSignal *)rzz_ephemeralArchiveWithContentsOfURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes {
-    RACSignal *result = [self rzz_ephemeralArchiveWithEntriesFromSignal:[ZZArchiveEntry rzz_archiveEntriesOfItemAtURL:URL includeExtendedAttributes:includeExtendedAttributes]];
-    return [result setNameWithFormat:@"[%@ +rzz_ephemeralArchiveWithContentsOfURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
 }
 
 - (RACSignal *)rzz_updateEntries:(NSArray *)entries {
@@ -120,20 +99,15 @@
 }
 
 - (RACSignal *)rzz_unarchiveToTemporaryURL {
-    RACSignal *result = [[NSURL rzz_temporaryURL]
-        flattenMap:^RACSignal *(NSURL *URL) {
-            return [[self rzz_unarchiveToURL:URL]
+    NSError *error = nil;
+    NSURL *URL = [NSURL rzz_temporaryURLOrError:&error];
+    RACSignal *result = nil;
+    if (URL) {
+        result = [[self rzz_unarchiveToURL:URL]
             concat:[RACSignal return:URL]];
-        }];
-    return [result setNameWithFormat:@"[%@ -rzz_unarchiveToTemporaryURL]", self];
-}
-
-- (RACSignal *)rzz_unarchiveToEphemeralURL {
-    RACSignal *result = [[NSURL rzz_ephemeralURL]
-        flattenMap:^RACSignal *(NSURL *URL) {
-            return [[self rzz_unarchiveToURL:URL]
-            concat:[RACSignal return:URL]];
-        }];
+    } else {
+        result = [RACSignal error:error];
+    }
     return [result setNameWithFormat:@"[%@ -rzz_unarchiveToTemporaryURL]", self];
 }
 
