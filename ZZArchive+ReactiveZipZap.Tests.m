@@ -66,7 +66,7 @@
 - (void)testUnarchiveToURL {
     NSError *error = nil;
     NSURL *URL = [NSURL rzz_temporaryURLOrError:&error];
-    XCTAssertTrue([[[ZZArchive rzz_temporaryArchiveWithContentsOfURL:[NSURL fileURLWithPath:@(__FILE__)] includeExtendedAttributes:YES]
+    XCTAssertTrue([[[ZZArchive rzz_temporaryArchiveWithContentsOfURL:[[NSURL fileURLWithPath:@(__FILE__)] URLByDeletingLastPathComponent] includeExtendedAttributes:YES]
         flattenMap:^RACSignal *(ZZArchive *archive) {
             return [archive rzz_unarchiveToURL:URL];
         }]
