@@ -22,5 +22,16 @@
 
 + (RACSignal *)rzz_archiveEntryWithFileName:(NSString *)fileName compress:(BOOL)compress streamBlock:(BOOL(^)(NSOutputStream* stream, NSError** error))streamBlock;
 
+/**
+ An archive entry with a specified filename, compression flag, and data block.
+ 
+ @param fileName The name for this archive entry.
+ @param compress Whether the archive entry should be compressed.
+ @param dataBlock A block that will generate data for the archive entry.
+ @return A signal containing the archive entry, or an error if one occurred.
+ */
+
++ (RACSignal *)rzz_archiveEntryWithFileName:(NSString *)fileName compress:(BOOL)compress dataBlock:(NSData *(^)(NSError** error))dataBlock;
+
 
 @end
