@@ -57,6 +57,17 @@
 + (RACSignal *)rzz_temporaryArchiveWithContentsOfURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes;
 
 /**
+ Creates an ephemeral archive with the contents of the URL.
+ 
+ @param URL The URL of the item that should be archived.
+ @param includeExtendedAttributes Whether or not extended attributes should be retrieved and packaged along with the original file.
+ @return A signal with a value pointing to an archive.
+ @discussion The archive will automatically be deleted when the subscription is disposed.
+ */
+
++ (RACSignal *)rzz_ephemeralArchiveWithContentsOfURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes;
+
+/**
  Writes out the archive's entries to the specified URL.
  
  @param URL The URL that will contain the written file(s).  Must be a directory.
