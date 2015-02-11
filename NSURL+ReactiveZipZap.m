@@ -132,7 +132,7 @@ ssize_t RZZSizeOfExtendedAttributesOfURL(NSURL *URL, NSError **error) {
         if (value) {
             free(value);
         }
-    } else if (size == -1) {
+    } else if (size == -1 && error) {
         *error = RZZErrorForPOSIXErrorAtURL(errno, self);
     }
     return result;
