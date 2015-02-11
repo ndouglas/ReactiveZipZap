@@ -84,5 +84,22 @@
     return [result setNameWithFormat:@"[%@ +zz_archiveEntriesOfDirectoryContentsAtURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
 }
 
++ (RACSignal *)rzz_archiveEntriesOfItemAtURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes {
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	BOOL isDirectory;
+    RACSignal *result = nil;
+	if ([fileManager fileExistsAtPath:URL.path isDirectory:&isDirectory]) {
+		if (isDirectory) {
+            result = [[self rzz_archiveEntriesOfDirectoryAtURL:URL includeExtendedAttributes:includeExtendedAttributes]
+                concat:[self rzz_archiveEntriesOfDirectoryContentsAtURL:URL includeExtendedAttributes:includeExtendedAttributes]];
+		} else {
+            result = [self rzz_archiveEntriesOfFileAtURL:URL includeExtendedAttributes:includeExtendedAttributes];
+		}
+	} else {
+        result = [RACSignal empty];
+    }
+    return [result setNameWithFormat:@"[%@ +zz_archiveEntriesOfItemAtURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
+}
+
 
 @end

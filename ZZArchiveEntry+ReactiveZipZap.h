@@ -129,5 +129,16 @@
 
 + (RACSignal *)rzz_archiveEntriesOfDirectoryContentsAtURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes;
 
+/**
+ Archive entries for the item at a URL and, optionally, its extended attributes.
+ 
+ @param URL The URL of the item to archive.
+ @param includeExtendedAttributes Whether the item's extended attributes should be preserved.
+ @return A signal containing the archive entries, or an error if one occurred.
+ @discussion Includes directory contents.
+ */
+
++ (RACSignal *)rzz_archiveEntriesOfItemAtURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes;
+
 
 @end
