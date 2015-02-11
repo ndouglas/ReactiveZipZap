@@ -38,6 +38,13 @@
     
 }
 
++ (RACSignal *)rzz_archiveEntryWithName:(NSString *)name data:(NSData *)data {
+    return [[self rzz_archiveEntryWithFileName:name compress:YES dataBlock:^NSData *(NSError *__autoreleasing *error) {
+            return data;
+        }]
+        setNameWithFormat:@"[%@ +zz_archiveEntryWithName: %@ data: %@]", self, name, data];
+}
+
 + (RACSignal *)rzz_archiveEntryOfFileAtURL:(NSURL *)URL {
     return [[self rzz_archiveEntryWithFileName:URL.lastPathComponent compress:YES dataBlock:^NSData *(NSError *__autoreleasing *error) {
             return [NSData dataWithContentsOfFile:URL.path options:NSDataReadingMappedIfSafe error:error];
