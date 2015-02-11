@@ -109,16 +109,14 @@
     return [result setNameWithFormat:@"[%@ -rzz_updateEntries: %@]", self, entries];
 }
 
-- (RACSignal *)rzz_unarchiveToURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes {
+- (RACSignal *)rzz_unarchiveToURL:(NSURL *)URL {
     RACSignal *result = [[self rzz_writeItemEntriesToURL:URL]
         then:^RACSignal *{
-            RACSignal *result = nil;
-            if (includeExtendedAttributes) {
-                result = [self rzz_writeExtendedAttributeEntriesToURL:URL];
-            } else {
-                result = [RACSignal empty];
-            }
-            return result;
+            return [self rzz_writeExtendedAttributeEntriesToURL:URL];
+        }];
+    return [result setNameWithFormat:@"[%@ -rzz_unarchiveToURL: %@]", self, URL];
+}
+
         }];
     return [result setNameWithFormat:@"[%@ -rzz_writeEntriesToURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
 }
