@@ -101,5 +101,13 @@
     return [result setNameWithFormat:@"[%@ +zz_archiveEntriesOfItemAtURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
 }
 
++ (RACSignal *)rzz_archiveEntriesOfItemsAtURLs:(NSArray *)URLs includeExtendedAttributes:(BOOL)includeExtendedAttributes {
+	RACSignal *result = [URLs.rac_sequence.signal
+        flattenMap:^RACSignal *(NSURL *URL) {
+            return [self rzz_archiveEntriesOfItemAtURL:URL includeExtendedAttributes:includeExtendedAttributes];
+        }];
+    return [result setNameWithFormat:@"[%@ +zz_archiveEntriesOfItemsAtURLs: %@ includeExtendedAttributes: %@]", self, URLs, @(includeExtendedAttributes)];
+}
+
 
 @end
