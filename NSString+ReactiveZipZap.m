@@ -12,6 +12,10 @@
 
 @implementation NSString (ReactiveZipZap)
 
++ (NSString *)rzz_pathToTemporaryArea {
+    return [NSTemporaryDirectory() stringByAppendingPathComponent:@"com.nathandouglas.reactivezipzap"];
+}
+
 - (NSString *)rzz_extendedAttributeTargetLastPathComponent {
     return [self.lastPathComponent stringByReplacingOccurrencesOfString:RZZXattrFilenamePrefix withString:@""];
 }
@@ -31,7 +35,7 @@
 + (RACSignal *)rzz_temporaryPath {
     RACSignal *result = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         NSString *nonce = [NSString stringWithFormat:@"%.7f_%@", [[NSDate date] timeIntervalSinceReferenceDate], [[NSUUID UUID] UUIDString]];
-        NSString *path = [[NSTemporaryDirectory() stringByAppendingPathComponent:@"com.nathandouglas.reactivezipzap"] stringByAppendingPathComponent:nonce];
+        NSString *path = [[self rzz_pathToTemporaryArea] stringByAppendingPathComponent:nonce];
         NSError *error = nil;
         if ([[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error]) {
             [subscriber sendNext:path];
@@ -47,7 +51,7 @@
 + (RACSignal *)rzz_ephemeralPath {
     RACSignal *result = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         NSString *nonce = [NSString stringWithFormat:@"%.7f_%@", [[NSDate date] timeIntervalSinceReferenceDate], [[NSUUID UUID] UUIDString]];
-        NSString *path = [[NSTemporaryDirectory() stringByAppendingPathComponent:@"com.nathandouglas.reactivezipzap"] stringByAppendingPathComponent:nonce];
+        NSString *path = [[self rzz_pathToTemporaryArea] stringByAppendingPathComponent:nonce];
         NSError *error = nil;
         if ([[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error]) {
             [subscriber sendNext:path];
