@@ -87,6 +87,11 @@
     return [result setNameWithFormat:@"[%@ +rzz_ephemeralArchiveWithEntriesFromSignal: %@]", self, signal];
 }
 
++ (RACSignal *)rzz_temporaryArchiveWithContentsOfURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes {
+    RACSignal *result = [self rzz_temporaryArchiveWithEntriesFromSignal:[ZZArchiveEntry rzz_archiveEntriesOfItemAtURL:URL includeExtendedAttributes:includeExtendedAttributes]];
+    return [result setNameWithFormat:@"[%@ +rzz_temporaryArchiveWithContentsOfURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
+}
+
 - (RACSignal *)rzz_updateEntries:(NSArray *)entries {
     RACSignal *result = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         NSError *error = nil;
