@@ -100,6 +100,8 @@ ssize_t RZZSizeOfExtendedAttributesOfURL(NSURL *URL, NSError **error) {
             if (names) {
                 free(names);
             }
+        } else {
+            result = [NSMutableArray array];
         }
     }
     return result;
@@ -154,7 +156,7 @@ ssize_t RZZSizeOfExtendedAttributesOfURL(NSURL *URL, NSError **error) {
     NSCAssert([self isFileURL], @"self needs to be a file URL");
     NSArray *attributeNames = [self rzz_namesOfExtendedAttributesWithError:error];
     NSMutableDictionary *result = nil;
-    if (attributeNames && attributeNames.count) {
+    if (attributeNames) {
         result = [NSMutableDictionary dictionaryWithCapacity:attributeNames.count];
         for (NSString *attributeName in attributeNames) {
             NSData *value = [self rzz_valueForExtendedAttributeWithName:attributeName error:error];
