@@ -36,6 +36,17 @@
 @property (copy, nonatomic, readonly) NSURL *rzz_extendedAttributeURL;
 
 /**
+ Cleans the directory where temporary URLs are generated.
+ 
+ @param date A date indicating how old the temporary items are that should be kept.
+ @param error An error object populated in the event of failure.
+ @return YES if the operation succeeded, otherwise NO.
+ @discussion Obviously, this removes every item currently at that location.
+ */
+
++ (BOOL)rzz_cleanTemporaryAreaOfItemsOlderThanDate:(NSDate *)date error:(NSError **)error;
+
+/**
  A URL to a temporary directory.
  
  

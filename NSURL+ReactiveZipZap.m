@@ -14,6 +14,10 @@
 
 @implementation NSURL (ReactiveZipZap)
 
++ (BOOL)rzz_cleanTemporaryAreaOfItemsOlderThanDate:(NSDate *)date error:(NSError **)error {
+    return [NSString rzz_cleanTemporaryAreaOfItemsOlderThanDate:date error:error];
+}
+
 - (NSURL *)rzz_extendedAttributeTargetURL {
     NSCAssert([self isFileURL], @"self needs to be a file URL");
     return [NSURL fileURLWithPath:[self.path rzz_extendedAttributeTargetPath]];
