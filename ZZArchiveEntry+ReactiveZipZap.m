@@ -50,5 +50,12 @@
         setNameWithFormat:@"[%@ +zz_archiveEntryOfDirectoryAtURL: %@]", self, URL];
 }
 
++ (RACSignal *)rzz_archiveEntryOfExtendedAttributesAtURL:(NSURL *)URL {
+    return [[self rzz_archiveEntryWithFileName:[RZZXattrFilenamePrefix stringByAppendingString:URL.lastPathComponent] compress:YES dataBlock:^NSData *(NSError *__autoreleasing *error) {
+            return [NSKeyedArchiver archivedDataWithRootObject:[URL rzz_dictionaryWithExtendedAttributesOrError:error]];
+        }]
+        setNameWithFormat:@"[%@ +zz_archiveEntryOfFileAtURL: %@]", self, URL];
+}
+
 
 @end

@@ -88,5 +88,14 @@
 
 + (RACSignal *)rzz_archiveEntryOfDirectoryAtURL:(NSURL *)URL;
 
+/**
+ An archive entry for the extended attributes of the item at a URL.
+ 
+ @param URL The URL of the item whose extended atributes should be archived.
+ @return A signal containing the archive entry, or an error if one occurred.
+ */
+
++ (RACSignal *)rzz_archiveEntryOfExtendedAttributesAtURL:(NSURL *)URL;
+
 
 @end
