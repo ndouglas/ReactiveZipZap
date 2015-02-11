@@ -45,5 +45,10 @@
         setNameWithFormat:@"[%@ +zz_archiveEntryOfFileAtURL: %@]", self, URL];
 }
 
++ (RACSignal *)rzz_archiveEntryOfDirectoryAtURL:(NSURL *)URL {
+    return [[self rzz_archiveEntryWithDirectoryName:URL.lastPathComponent]
+        setNameWithFormat:@"[%@ +zz_archiveEntryOfDirectoryAtURL: %@]", self, URL];
+}
+
 
 @end

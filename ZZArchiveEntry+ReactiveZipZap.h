@@ -78,5 +78,15 @@
 
 + (RACSignal *)rzz_archiveEntryOfFileAtURL:(NSURL *)URL;
 
+/**
+ An archive entry for a directory at a URL.
+ 
+ @param URL The URL of the item to archive.
+ @return A signal containing the archive entry, or an error if one occurred.
+ @discussion No extended attributes.
+ */
+
++ (RACSignal *)rzz_archiveEntryOfDirectoryAtURL:(NSURL *)URL;
+
 
 @end
