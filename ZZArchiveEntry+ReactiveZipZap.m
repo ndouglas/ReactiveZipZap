@@ -129,5 +129,19 @@
     return [result setNameWithFormat:@"[%@ +zz_writeToURL: %@]", self, URL];
 }
 
+- (RACSignal *)rzz_writeAsExtendedAttributesToURL:(NSURL *)URL {
+    RACSignal *result = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        NSError *error = nil;
+        NSData *data = [self newDataWithError:&error];
+        NSURL *targetURL = URL.rzz_extendedAttributeTargetURL;
+        NSDictionary *dictionary = nil;
+        if (!data || !(dictionary = (NSDictionary *)[NSKeyedUnarchiver unarchiveObjectWithData:data]) || [targetURL rzz_setExtendedAttributesWithDictionary:dictionary error:&error]) {
+            [subscriber sendError:error];
+        }
+        [subscriber sendCompleted];
+        return nil;
+    }];
+    return [result setNameWithFormat:@"[%@ +zz_writeToURL: %@]", self, URL];
+}
 
 @end

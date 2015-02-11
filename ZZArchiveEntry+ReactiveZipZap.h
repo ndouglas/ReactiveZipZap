@@ -160,5 +160,13 @@
 
 - (RACSignal *)rzz_writeToURL:(NSURL *)URL;
 
+/**
+ Writes the entry as extended attributes to the item at the URL.
+ 
+ @param URL The destination URL.
+ @return A signal that completes or returns an error if one occurred.
+ */
+
+- (RACSignal *)rzz_writeAsExtendedAttributesToURL:(NSURL *)URL;
 
 @end
