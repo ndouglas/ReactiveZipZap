@@ -76,4 +76,12 @@
 
 - (RACSignal *)rzz_unarchiveToURL:(NSURL *)URL;
 
+/**
+ Writes out the archive's entries to a temporary URL.
+ 
+ @return A signal that completes when the entries are written, or returns an error if one occurred.
+ */
+
+- (RACSignal *)rzz_unarchiveToTemporaryURL;
+
 @end

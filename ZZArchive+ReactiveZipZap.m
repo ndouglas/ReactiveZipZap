@@ -117,6 +117,14 @@
     return [result setNameWithFormat:@"[%@ -rzz_unarchiveToURL: %@]", self, URL];
 }
 
+- (RACSignal *)rzz_unarchiveToTemporaryURL {
+    RACSignal *result = [[NSURL rzz_temporaryURL]
+        flattenMap:^RACSignal *(NSURL *URL) {
+            return [self rzz_unarchiveToURL:URL];
+        }];
+    return [result setNameWithFormat:@"[%@ -rzz_unarchiveToTemporaryURL]", self];
+}
+
         }];
     return [result setNameWithFormat:@"[%@ -rzz_writeEntriesToURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
 }
