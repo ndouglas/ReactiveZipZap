@@ -53,5 +53,20 @@
 
 + (RACSignal *)rzz_archiveEntryWithDirectoryName:(NSString *)directoryName;
 
+/**
+ An archive entry with explicit settings.
+ 
+ @param fileName The name for this archive entry.
+ @param fileMode The UNIX file mode and file type.
+ @param lastModified The last modified datetime for the entry.
+ @param compressionLevel The compression level.
+ @param dataBlock A block that writes entry file data.
+ @param streamBlock A block that writes the entry file to the stream.
+ @param dataConsumerBlock A block that passes the entry file to the data consumer.
+ @return A signal containing the archive entry, or an error if one occurred.
+ */
+
++ (RACSignal *)rzz_archiveEntryWithFileName:(NSString*)fileName fileMode:(mode_t)fileMode lastModified:(NSDate*)lastModified compressionLevel:(NSInteger)compressionLevel dataBlock:(NSData*(^)(NSError** error))dataBlock streamBlock:(BOOL(^)(NSOutputStream* stream, NSError** error))streamBlock dataConsumerBlock:(BOOL(^)(CGDataConsumerRef dataConsumer, NSError** error))dataConsumerBlock;
+
 
 @end

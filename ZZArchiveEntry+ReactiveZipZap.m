@@ -32,5 +32,11 @@
         setNameWithFormat:@"[%@ zz_archiveEntryWithDirectoryName: %@]", self, directoryName];
 }
 
++ (RACSignal *)rzz_archiveEntryWithFileName:(NSString*)fileName fileMode:(mode_t)fileMode lastModified:(NSDate*)lastModified compressionLevel:(NSInteger)compressionLevel dataBlock:(NSData*(^)(NSError** error))dataBlock streamBlock:(BOOL(^)(NSOutputStream* stream, NSError** error))streamBlock dataConsumerBlock:(BOOL(^)(CGDataConsumerRef dataConsumer, NSError** error))dataConsumerBlock {
+    return [[RACSignal return:[self archiveEntryWithFileName:fileName fileMode:fileMode lastModified:lastModified compressionLevel:compressionLevel dataBlock:dataBlock streamBlock:streamBlock dataConsumerBlock:dataConsumerBlock]]
+        setNameWithFormat:@"[%@ zz_archiveEntryWithFileName: %@ fileMode: %@ lastModified: %@ compressionLevel: %@ dataBlock: %@ streamBlock: %@ dataConsumerBlock %@]", self, fileName, @(fileMode), lastModified, @(compressionLevel), dataBlock, streamBlock, dataConsumerBlock];
+    
+}
+
 
 @end
