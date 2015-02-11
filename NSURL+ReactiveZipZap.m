@@ -14,6 +14,10 @@
 
 @implementation NSURL (ReactiveZipZap)
 
++ (BOOL)rzz_cleanTemporaryAreaOrError:(NSError **)error {
+    return [NSString rzz_cleanTemporaryAreaOrError:error];
+}
+
 + (BOOL)rzz_cleanTemporaryAreaOfItemsOlderThanDate:(NSDate *)date error:(NSError **)error {
     return [NSString rzz_cleanTemporaryAreaOfItemsOlderThanDate:date error:error];
 }
