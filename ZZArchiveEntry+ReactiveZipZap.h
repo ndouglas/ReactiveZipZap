@@ -151,5 +151,14 @@
 
 + (RACSignal *)rzz_archiveEntriesOfItemsAtURLs:(NSArray *)URLs includeExtendedAttributes:(BOOL)includeExtendedAttributes;
 
+/**
+ Writes the entry to the URL.
+ 
+ @param URL The destination URL.
+ @return A signal that completes or returns an error if one occurred.
+ */
+
+- (RACSignal *)rzz_writeToURL:(NSURL *)URL;
+
 
 @end

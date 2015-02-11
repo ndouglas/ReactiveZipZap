@@ -109,5 +109,25 @@
     return [result setNameWithFormat:@"[%@ +zz_archiveEntriesOfItemsAtURLs: %@ includeExtendedAttributes: %@]", self, URLs, @(includeExtendedAttributes)];
 }
 
+- (RACSignal *)rzz_writeToURL:(NSURL *)URL {
+    RACSignal *result = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSError *error = nil;
+        if (self.fileMode & S_IFDIR) {
+            if (![fileManager createDirectoryAtURL:URL withIntermediateDirectories:YES attributes:nil error:&error]) {
+                [subscriber sendError:error];
+            }
+        } else {
+            NSData *data;
+            if (![fileManager createDirectoryAtURL:URL.URLByDeletingLastPathComponent withIntermediateDirectories:YES attributes:nil error:&error] || !(data = [self newDataWithError:&error]) || ![data writeToURL:URL atomically:YES]) {
+                [subscriber sendError:error];
+            }
+        }
+        [subscriber sendCompleted];
+        return nil;
+    }];
+    return [result setNameWithFormat:@"[%@ +zz_writeToURL: %@]", self, URL];
+}
+
 
 @end
