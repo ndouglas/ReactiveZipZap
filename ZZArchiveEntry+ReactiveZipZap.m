@@ -14,27 +14,27 @@
 
 + (RACSignal *)rzz_archiveEntryWithFileName:(NSString *)fileName compress:(BOOL)compress streamBlock:(BOOL(^)(NSOutputStream* stream, NSError** error))streamBlock {
     return [[RACSignal return:[self archiveEntryWithFileName:fileName compress:compress streamBlock:streamBlock]]
-        setNameWithFormat:@"[%@ zz_archiveEntryWithFileName: %@ compress: %@ streamBlock: %@]", self, fileName, @(compress), streamBlock];
+        setNameWithFormat:@"[%@ rzz_archiveEntryWithFileName: %@ compress: %@ streamBlock: %@]", self, fileName, @(compress), streamBlock];
 }
 
 + (RACSignal *)rzz_archiveEntryWithFileName:(NSString *)fileName compress:(BOOL)compress dataBlock:(NSData *(^)(NSError** error))dataBlock {
     return [[RACSignal return:[self archiveEntryWithFileName:fileName compress:compress dataBlock:dataBlock]]
-        setNameWithFormat:@"[%@ zz_archiveEntryWithFileName: %@ compress: %@ dataBlock: %@]", self, fileName, @(compress), dataBlock];
+        setNameWithFormat:@"[%@ rzz_archiveEntryWithFileName: %@ compress: %@ dataBlock: %@]", self, fileName, @(compress), dataBlock];
 }
 
 + (RACSignal *)rzz_archiveEntryWithFileName:(NSString *)fileName compress:(BOOL)compress dataConsumerBlock:(BOOL(^)(CGDataConsumerRef dataConsumer, NSError** error))dataConsumerBlock {
     return [[RACSignal return:[self archiveEntryWithFileName:fileName compress:compress dataConsumerBlock:dataConsumerBlock]]
-        setNameWithFormat:@"[%@ zz_archiveEntryWithFileName: %@ compress: %@ dataConsumerBlock: %@]", self, fileName, @(compress), dataConsumerBlock];
+        setNameWithFormat:@"[%@ rzz_archiveEntryWithFileName: %@ compress: %@ dataConsumerBlock: %@]", self, fileName, @(compress), dataConsumerBlock];
 }
 
 + (RACSignal *)rzz_archiveEntryWithDirectoryName:(NSString *)directoryName {
     return [[RACSignal return:[self archiveEntryWithDirectoryName:directoryName]]
-        setNameWithFormat:@"[%@ zz_archiveEntryWithDirectoryName: %@]", self, directoryName];
+        setNameWithFormat:@"[%@ rzz_archiveEntryWithDirectoryName: %@]", self, directoryName];
 }
 
 + (RACSignal *)rzz_archiveEntryWithFileName:(NSString*)fileName fileMode:(mode_t)fileMode lastModified:(NSDate*)lastModified compressionLevel:(NSInteger)compressionLevel dataBlock:(NSData*(^)(NSError** error))dataBlock streamBlock:(BOOL(^)(NSOutputStream* stream, NSError** error))streamBlock dataConsumerBlock:(BOOL(^)(CGDataConsumerRef dataConsumer, NSError** error))dataConsumerBlock {
     return [[RACSignal return:[self archiveEntryWithFileName:fileName fileMode:fileMode lastModified:lastModified compressionLevel:compressionLevel dataBlock:dataBlock streamBlock:streamBlock dataConsumerBlock:dataConsumerBlock]]
-        setNameWithFormat:@"[%@ zz_archiveEntryWithFileName: %@ fileMode: %@ lastModified: %@ compressionLevel: %@ dataBlock: %@ streamBlock: %@ dataConsumerBlock %@]", self, fileName, @(fileMode), lastModified, @(compressionLevel), dataBlock, streamBlock, dataConsumerBlock];
+        setNameWithFormat:@"[%@ rzz_archiveEntryWithFileName: %@ fileMode: %@ lastModified: %@ compressionLevel: %@ dataBlock: %@ streamBlock: %@ dataConsumerBlock %@]", self, fileName, @(fileMode), lastModified, @(compressionLevel), dataBlock, streamBlock, dataConsumerBlock];
     
 }
 
@@ -42,38 +42,38 @@
     return [[self rzz_archiveEntryWithFileName:name compress:YES dataBlock:^NSData *(NSError *__autoreleasing *error) {
             return data;
         }]
-        setNameWithFormat:@"[%@ +zz_archiveEntryWithName: %@ data: %@]", self, name, data];
+        setNameWithFormat:@"[%@ +rzz_archiveEntryWithName: %@ data: %@]", self, name, data];
 }
 
 + (RACSignal *)rzz_archiveEntryOfFileAtURL:(NSURL *)URL {
     return [[self rzz_archiveEntryWithFileName:URL.lastPathComponent compress:YES dataBlock:^NSData *(NSError *__autoreleasing *error) {
             return [NSData dataWithContentsOfFile:URL.path options:NSDataReadingMappedIfSafe error:error];
         }]
-        setNameWithFormat:@"[%@ +zz_archiveEntryOfFileAtURL: %@]", self, URL];
+        setNameWithFormat:@"[%@ +rzz_archiveEntryOfFileAtURL: %@]", self, URL];
 }
 
 + (RACSignal *)rzz_archiveEntryOfDirectoryAtURL:(NSURL *)URL {
     return [[self rzz_archiveEntryWithDirectoryName:URL.lastPathComponent]
-        setNameWithFormat:@"[%@ +zz_archiveEntryOfDirectoryAtURL: %@]", self, URL];
+        setNameWithFormat:@"[%@ +rzz_archiveEntryOfDirectoryAtURL: %@]", self, URL];
 }
 
 + (RACSignal *)rzz_archiveEntryOfExtendedAttributesAtURL:(NSURL *)URL {
     return [[self rzz_archiveEntryWithFileName:[RZZXattrFilenamePrefix stringByAppendingString:URL.lastPathComponent] compress:YES dataBlock:^NSData *(NSError *__autoreleasing *error) {
             return [NSKeyedArchiver archivedDataWithRootObject:[URL rzz_dictionaryWithExtendedAttributesOrError:error]];
         }]
-        setNameWithFormat:@"[%@ +zz_archiveEntryOfFileAtURL: %@]", self, URL];
+        setNameWithFormat:@"[%@ +rzz_archiveEntryOfFileAtURL: %@]", self, URL];
 }
 
 + (RACSignal *)rzz_archiveEntriesOfFileAtURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes {
     return [[[self rzz_archiveEntryOfFileAtURL:URL]
         concat:includeExtendedAttributes ? [self rzz_archiveEntryOfExtendedAttributesAtURL:URL] : [RACSignal empty]]
-        setNameWithFormat:@"[%@ +zz_archiveEntryOfFileAtURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
+        setNameWithFormat:@"[%@ +rzz_archiveEntryOfFileAtURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
 }
 
 + (RACSignal *)rzz_archiveEntriesOfDirectoryAtURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes {
     return [[[self rzz_archiveEntryOfDirectoryAtURL:URL]
         concat:includeExtendedAttributes ? [self rzz_archiveEntryOfExtendedAttributesAtURL:URL] : [RACSignal empty]]
-        setNameWithFormat:@"[%@ +zz_archiveEntryOfDirectoryAtURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
+        setNameWithFormat:@"[%@ +rzz_archiveEntryOfDirectoryAtURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
 }
 
 + (RACSignal *)rzz_archiveEntriesOfDirectoryContentsAtURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes {
@@ -88,7 +88,7 @@
     } else {
         result = [RACSignal error:error];
     }
-    return [result setNameWithFormat:@"[%@ +zz_archiveEntriesOfDirectoryContentsAtURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
+    return [result setNameWithFormat:@"[%@ +rzz_archiveEntriesOfDirectoryContentsAtURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
 }
 
 + (RACSignal *)rzz_archiveEntriesOfItemAtURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes {
@@ -105,7 +105,7 @@
 	} else {
         result = [RACSignal empty];
     }
-    return [result setNameWithFormat:@"[%@ +zz_archiveEntriesOfItemAtURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
+    return [result setNameWithFormat:@"[%@ +rzz_archiveEntriesOfItemAtURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
 }
 
 + (RACSignal *)rzz_archiveEntriesOfItemsAtURLs:(NSArray *)URLs includeExtendedAttributes:(BOOL)includeExtendedAttributes {
@@ -113,7 +113,14 @@
         flattenMap:^RACSignal *(NSURL *URL) {
             return [self rzz_archiveEntriesOfItemAtURL:URL includeExtendedAttributes:includeExtendedAttributes];
         }];
-    return [result setNameWithFormat:@"[%@ +zz_archiveEntriesOfItemsAtURLs: %@ includeExtendedAttributes: %@]", self, URLs, @(includeExtendedAttributes)];
+    return [result setNameWithFormat:@"[%@ +rzz_archiveEntriesOfItemsAtURLs: %@ includeExtendedAttributes: %@]", self, URLs, @(includeExtendedAttributes)];
+}
+
+- (RACSignal *)rzz_data {
+    NSError *error = nil;
+    NSData *data = [self newDataWithError:&error];
+    RACSignal *result = data ? [RACSignal return:data] : [RACSignal error:error];
+    return [result setNameWithFormat:@"[%@ +rzz_data]", self];
 }
 
 - (RACSignal *)rzz_writeToURL:(NSURL *)URL {
@@ -133,7 +140,7 @@
         [subscriber sendCompleted];
         return nil;
     }];
-    return [result setNameWithFormat:@"[%@ +zz_writeToURL: %@]", self, URL];
+    return [result setNameWithFormat:@"[%@ +rzz_writeToURL: %@]", self, URL];
 }
 
 - (RACSignal *)rzz_writeAsExtendedAttributesToURL:(NSURL *)URL {
@@ -148,7 +155,7 @@
         [subscriber sendCompleted];
         return nil;
     }];
-    return [result setNameWithFormat:@"[%@ +zz_writeToURL: %@]", self, URL];
+    return [result setNameWithFormat:@"[%@ +rzz_writeToURL: %@]", self, URL];
 }
 
 @end

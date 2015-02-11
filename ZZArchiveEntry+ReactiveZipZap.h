@@ -162,6 +162,14 @@
 + (RACSignal *)rzz_archiveEntriesOfItemsAtURLs:(NSArray *)URLs includeExtendedAttributes:(BOOL)includeExtendedAttributes;
 
 /**
+ Writes the entry to a data object and returns it.
+ 
+ @return A signal that returns a data object or returns an error if one occurred.
+ */
+
+- (RACSignal *)rzz_data;
+
+/**
  Writes the entry to the URL.
  
  @param URL The destination URL.
