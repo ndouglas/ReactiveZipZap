@@ -67,11 +67,13 @@
     RACSignal *result = [archiveSignal
         flattenMap:^RACSignal *(ZZArchive *archive) {
             NSMutableArray *entries = [NSMutableArray array];
-            RACSignal *result = [[entriesSignal
+            RACSignal *result = [[[[entriesSignal
                 doNext:^(ZZArchiveEntry *archiveEntry) {
                     [entries addObject:archiveEntry];
                 }]
-                concat:[archive rzz_updateEntries:entries]];
+                ignoreValues]
+                concat:[archive rzz_updateEntries:entries]]
+                concat:[RACSignal return:archive]];
             return result;
         }];
     return [result setNameWithFormat:@"[%@ +rzz_archiveFromSignal: %@ addEntriesFromSignal: %@]", self, archiveSignal, entriesSignal];

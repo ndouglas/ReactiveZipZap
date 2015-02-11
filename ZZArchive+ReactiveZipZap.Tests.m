@@ -84,11 +84,87 @@
         }];
 }
 
+- (void)testTemporaryArchiveWithContentsOfURLIncludeExtendedAttributes {
+    __block NSString *path = nil;
+    __block NSURL *URL = nil;
+	RACDisposable *disposable = [RACDisposable disposableWithBlock:^{
+        XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:path]);
+        XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:URL.path]);
+    }];
+    [[[[[ZZArchive rzz_temporaryArchiveWithContentsOfURL:[NSURL fileURLWithPath:@(__FILE__)] includeExtendedAttributes:YES]
+        doNext:^(ZZArchive *archive) {
+            path = archive.URL.path;
+        }]
+        map:^ZZArchiveEntry *(ZZArchive *archive) {
+            return archive.entries[0];
+        }]
+        flattenMap:^RACSignal *(ZZArchiveEntry *archiveEntry) {
+            return [[[[NSURL rzz_ephemeralURL]
+                doNext:^(NSURL *ephemeralURL) {
+                    URL = ephemeralURL;
+                    NSError *error;
+                    XCTAssertTrue([[archiveEntry rzz_writeToURL:[ephemeralURL URLByAppendingPathComponent:@"test"]] waitUntilCompleted:&error], @"%@", error);
+                }]
+                doCompleted:^{
+                    XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:URL.path]);
+                }]
+                then:^RACSignal *{
+                    XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:URL.path]);
+                    return [RACSignal return:archiveEntry];
+                }];
+        }]
+        subscribeError:^(NSError *error) {
+            XCTFail(@"%@", error);
+        } completed:^{
+            XCTAssertNotNil(path);
+            XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:path]);
+            XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:URL.path]);
+            [disposable dispose];
+        }];
+}
+
+- (void)testEphemeralArchiveWithContentsOfURLIncludeExtendedAttributes {
+    __block NSString *path = nil;
+    __block NSURL *URL = nil;
+	RACDisposable *disposable = [RACDisposable disposableWithBlock:^{
+        XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:path]);
+        XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:URL.path]);
+    }];
+    [[[[[ZZArchive rzz_ephemeralArchiveWithContentsOfURL:[NSURL fileURLWithPath:@(__FILE__)] includeExtendedAttributes:YES]
+        doNext:^(ZZArchive *archive) {
+            path = archive.URL.path;
+        }]
+        map:^ZZArchiveEntry *(ZZArchive *archive) {
+            return archive.entries[0];
+        }]
+        flattenMap:^RACSignal *(ZZArchiveEntry *archiveEntry) {
+            return [[[[NSURL rzz_ephemeralURL]
+                doNext:^(NSURL *ephemeralURL) {
+                    URL = ephemeralURL;
+                    NSError *error;
+                    XCTAssertTrue([[archiveEntry rzz_writeToURL:[ephemeralURL URLByAppendingPathComponent:@"test"]] waitUntilCompleted:&error], @"%@", error);
+                }]
+                doCompleted:^{
+                    XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:URL.path]);
+                }]
+                then:^RACSignal *{
+                    XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:URL.path]);
+                    return [RACSignal return:archiveEntry];
+                }];
+        }]
+        subscribeError:^(NSError *error) {
+            XCTFail(@"%@", error);
+        } completed:^{
+            XCTAssertNotNil(path);
+            XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:path]);
+            XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:URL.path]);
+            [disposable dispose];
+        }];
+}
+
 @end
 
 /**
-+ (RACSignal *)rzz_temporaryArchiveWithContentsOfURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes;
-+ (RACSignal *)rzz_ephemeralArchiveWithContentsOfURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes;
 - (RACSignal *)rzz_unarchiveToURL:(NSURL *)URL;
 - (RACSignal *)rzz_unarchiveToTemporaryURL;
 - (RACSignal *)rzz_unarchiveToEphemeralURL;
