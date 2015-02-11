@@ -48,7 +48,7 @@
 + (RACSignal *)rzz_mapNewArchiveForURLSignal:(RACSignal *)URLSignal {
     RACSignal *result = [URLSignal
         flattenMap:^RACSignal *(NSURL *URL) {
-            return [self rzz_newArchiveAtURL:URL];
+            return [self rzz_newArchiveAtURL:[URL URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]]];
         }];
     return [result setNameWithFormat:@"[%@ +rzz_mapNewArchiveForURLSignal: %@]", self, URLSignal];
 }

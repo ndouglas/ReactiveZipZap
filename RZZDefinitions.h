@@ -13,4 +13,4 @@
  A prefix prepended to the names of files and used to indicate a ZIP entry containing extended attributes.
  */
 
-NSString * const RZZXattrFilenamePrefix;
+extern NSString * const RZZXattrFilenamePrefix;

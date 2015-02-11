@@ -123,17 +123,26 @@
     return [result setNameWithFormat:@"[%@ +rzz_data]", self];
 }
 
+- (BOOL)rzz_ifNecessaryCreateDirectoryAtPath:(NSString *)path error:(NSError **)error {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL isDirectory;
+    BOOL result = [fileManager fileExistsAtPath:path isDirectory:&isDirectory] && isDirectory;
+    if (!result) {
+        result = [fileManager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:error];
+    }
+    return result;
+}
+
 - (RACSignal *)rzz_writeToURL:(NSURL *)URL {
     RACSignal *result = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        NSFileManager *fileManager = [NSFileManager defaultManager];
         NSError *error = nil;
         if (self.fileMode & S_IFDIR) {
-            if (![fileManager createDirectoryAtURL:URL withIntermediateDirectories:YES attributes:nil error:&error]) {
+            if (![self rzz_ifNecessaryCreateDirectoryAtPath:URL.path error:&error]) {
                 [subscriber sendError:error];
             }
         } else {
             NSData *data;
-            if (![fileManager createDirectoryAtURL:URL.URLByDeletingLastPathComponent withIntermediateDirectories:YES attributes:nil error:&error] || !(data = [self newDataWithError:&error]) || ![data writeToURL:URL atomically:YES]) {
+            if (![self rzz_ifNecessaryCreateDirectoryAtPath:URL.URLByDeletingLastPathComponent.path error:&error] || !(data = [self newDataWithError:&error]) || ![data writeToURL:URL atomically:YES]) {
                 [subscriber sendError:error];
             }
         }
@@ -147,10 +156,21 @@
     RACSignal *result = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         NSError *error = nil;
         NSData *data = [self newDataWithError:&error];
-        NSURL *targetURL = URL.rzz_extendedAttributeTargetURL;
-        NSDictionary *dictionary = nil;
-        if (!data || !(dictionary = (NSDictionary *)[NSKeyedUnarchiver unarchiveObjectWithData:data]) || [targetURL rzz_setExtendedAttributesWithDictionary:dictionary error:&error]) {
+        if (!data) {
             [subscriber sendError:error];
+        } else {
+            NSURL *targetURL = URL.rzz_extendedAttributeTargetURL;
+            @try {
+                NSDictionary *dictionary = (NSDictionary *)[NSKeyedUnarchiver unarchiveObjectWithData:data];
+                if (![targetURL rzz_setExtendedAttributesWithDictionary:dictionary error:&error]) {
+                    [subscriber sendError:error];
+                }
+            }
+            @catch (NSException *exception) {
+                [subscriber sendError:[NSError errorWithDomain:NSStringFromClass([NSException class]) code:0 userInfo:@{
+                    NSLocalizedDescriptionKey : exception.description,
+                }]];
+            }
         }
         [subscriber sendCompleted];
         return nil;
