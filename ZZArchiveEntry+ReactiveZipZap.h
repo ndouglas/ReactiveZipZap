@@ -68,5 +68,15 @@
 
 + (RACSignal *)rzz_archiveEntryWithFileName:(NSString*)fileName fileMode:(mode_t)fileMode lastModified:(NSDate*)lastModified compressionLevel:(NSInteger)compressionLevel dataBlock:(NSData*(^)(NSError** error))dataBlock streamBlock:(BOOL(^)(NSOutputStream* stream, NSError** error))streamBlock dataConsumerBlock:(BOOL(^)(CGDataConsumerRef dataConsumer, NSError** error))dataConsumerBlock;
 
+/**
+ An archive entry for a file (not directory) at a URL.
+ 
+ @param URL The URL of the item to archive.
+ @return A signal containing the archive entry, or an error if one occurred.
+ @discussion No extended attributes.
+ */
+
++ (RACSignal *)rzz_archiveEntryOfFileAtURL:(NSURL *)URL;
+
 
 @end

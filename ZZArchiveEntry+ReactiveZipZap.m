@@ -38,5 +38,12 @@
     
 }
 
++ (RACSignal *)rzz_archiveEntryOfFileAtURL:(NSURL *)URL {
+    return [[self rzz_archiveEntryWithFileName:URL.lastPathComponent compress:YES dataBlock:^NSData *(NSError *__autoreleasing *error) {
+            return [NSData dataWithContentsOfFile:URL.path options:NSDataReadingMappedIfSafe error:error];
+        }]
+        setNameWithFormat:@"[%@ +zz_archiveEntryOfFileAtURL: %@]", self, URL];
+}
+
 
 @end
