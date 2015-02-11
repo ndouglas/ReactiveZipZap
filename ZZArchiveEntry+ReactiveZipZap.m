@@ -27,5 +27,10 @@
         setNameWithFormat:@"[%@ zz_archiveEntryWithFileName: %@ compress: %@ dataConsumerBlock: %@]", self, fileName, @(compress), dataConsumerBlock];
 }
 
++ (RACSignal *)rzz_archiveEntryWithDirectoryName:(NSString *)directoryName {
+    return [[RACSignal return:[self archiveEntryWithDirectoryName:directoryName]]
+        setNameWithFormat:@"[%@ zz_archiveEntryWithDirectoryName: %@]", self, directoryName];
+}
+
 
 @end

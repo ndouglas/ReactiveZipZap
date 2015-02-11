@@ -44,5 +44,14 @@
 
 + (RACSignal *)rzz_archiveEntryWithFileName:(NSString *)fileName compress:(BOOL)compress dataConsumerBlock:(BOOL(^)(CGDataConsumerRef dataConsumer, NSError** error))dataConsumerBlock;
 
+/**
+ An archive entry for a directory entry.
+ 
+ @param directoryName The name for this archive entry.
+ @return A signal containing the archive entry, or an error if one occurred.
+ */
+
++ (RACSignal *)rzz_archiveEntryWithDirectoryName:(NSString *)directoryName;
+
 
 @end
