@@ -20,6 +20,24 @@
     return [[NSFileManager defaultManager] removeItemAtPath:[self rzz_pathToTemporaryArea] error:error] && [[NSFileManager defaultManager] createDirectoryAtPath:[self rzz_pathToTemporaryArea] withIntermediateDirectories:YES attributes:nil error:error];
 }
 
++ (BOOL)rzz_cleanTemporaryAreaOfItemsOlderThanDate:(NSDate *)date error:(NSError **)error {
+    NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self rzz_pathToTemporaryArea] error:error];
+    BOOL result = contents != nil;
+    if (contents) {
+        NSString *dateString = [NSString stringWithFormat:@"%.7f", date.timeIntervalSinceReferenceDate];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        for (NSString *path in contents) {
+            if ([path compare:dateString] == NSOrderedAscending) {
+                if (![fileManager removeItemAtPath:[[self rzz_pathToTemporaryArea] stringByAppendingPathComponent:path] error:error]) {
+                    result = NO;
+                    break;
+                }
+            }
+        }
+    }
+    return result;
+}
+
 - (NSString *)rzz_extendedAttributeTargetLastPathComponent {
     return [self.lastPathComponent stringByReplacingOccurrencesOfString:RZZXattrFilenamePrefix withString:@""];
 }
