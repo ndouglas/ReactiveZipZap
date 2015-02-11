@@ -63,5 +63,11 @@
         setNameWithFormat:@"[%@ +zz_archiveEntryOfFileAtURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
 }
 
++ (RACSignal *)rzz_archiveEntriesOfDirectoryAtURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes {
+    return [[[self rzz_archiveEntryOfDirectoryAtURL:URL]
+        concat:includeExtendedAttributes ? [self rzz_archiveEntryOfExtendedAttributesAtURL:URL] : [RACSignal empty]]
+        setNameWithFormat:@"[%@ +zz_archiveEntryOfDirectoryAtURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
+}
+
 
 @end
