@@ -36,6 +36,16 @@
 @property (copy, nonatomic, readonly) NSString *rzz_extendedAttributePath;
 
 /**
+ Cleans the directory where temporary URLs are generated.
+ 
+ @param error An error object populated in the event of failure.
+ @return YES if the operation succeeded, otherwise NO.
+ @discussion Obviously, this removes every item currently at that location.
+ */
+
++ (BOOL)rzz_cleanTemporaryAreaOrError:(NSError **)error;
+
+/**
  A path to a temporary directory.
  
  

@@ -16,6 +16,10 @@
     return [NSTemporaryDirectory() stringByAppendingPathComponent:@"com.nathandouglas.reactivezipzap"];
 }
 
++ (BOOL)rzz_cleanTemporaryAreaOrError:(NSError **)error {
+    return [[NSFileManager defaultManager] removeItemAtPath:[self rzz_pathToTemporaryArea] error:error] && [[NSFileManager defaultManager] createDirectoryAtPath:[self rzz_pathToTemporaryArea] withIntermediateDirectories:YES attributes:nil error:error];
+}
+
 - (NSString *)rzz_extendedAttributeTargetLastPathComponent {
     return [self.lastPathComponent stringByReplacingOccurrencesOfString:RZZXattrFilenamePrefix withString:@""];
 }
