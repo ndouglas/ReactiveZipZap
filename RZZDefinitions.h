@@ -8,6 +8,7 @@
 //
 
 #import <zipzap/zipzap.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 /**
  A prefix prepended to the names of files and used to indicate a ZIP entry containing extended attributes.

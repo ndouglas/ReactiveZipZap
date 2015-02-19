@@ -24,6 +24,6 @@ Pod::Spec.new do |s|
   s.source       		= { :git => "https://github.com/ndouglas/ReactiveZipZap.git", :tag => "1.0.0" }
   s.source_files  		= "*.{h,m}"
   s.exclude_files 		= "*.Tests.m"
-  s.dependency			'ZipZap'
+  s.dependency			'zipzap'
   s.dependency			'ReactiveCocoa'
 end
