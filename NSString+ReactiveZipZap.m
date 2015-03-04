@@ -40,24 +40,26 @@
 
 + (RACSignal *)rzz_cleanTemporaryAreaOfItemsOlderThanDate:(NSDate *)date {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self rzz_pathToTemporaryArea] error:error];
+        NSError *error = nil;
+        NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self rzz_pathToTemporaryArea] error:&error];
         if (contents && contents.count) {
             NSString *dateString = [NSString stringWithFormat:@"%.7f", date.timeIntervalSinceReferenceDate];
             NSFileManager *fileManager = [NSFileManager defaultManager];
             for (NSString *path in contents) {
                 if ([path compare:dateString] == NSOrderedAscending) {
-                    if (![fileManager removeItemAtPath:[[self rzz_pathToTemporaryArea] stringByAppendingPathComponent:path] error:error]) {
+                    if (![fileManager removeItemAtPath:[[self rzz_pathToTemporaryArea] stringByAppendingPathComponent:path] error:&error]) {
                         [subscriber sendError:error];
                     } else {
                         [subscriber sendNext:path];
                     }
                 }
             }
+        } else {
+            [subscriber sendError:error];
         }
         [subscriber sendCompleted];
         return nil;
     }];
-    return result;
 }
 
 - (NSString *)rzz_extendedAttributeTargetLastPathComponent {
