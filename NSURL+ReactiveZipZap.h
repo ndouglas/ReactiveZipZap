@@ -57,6 +57,16 @@
 + (BOOL)rzz_cleanTemporaryAreaOfItemsOlderThanDate:(NSDate *)date error:(NSError **)error;
 
 /**
+ Cleans the directory where temporary URLs are generated.
+ 
+ @param date A date indicating how old the temporary items are that should be kept.
+ @return A signal listing deleted items or errors if any occurred.
+ @discussion Obviously, this removes every item currently at that location.
+ */
+
++ (RACSignal *)rzz_cleanTemporaryAreaOfItemsOlderThanDate:(NSDate *)date;
+
+/**
  A URL to a temporary directory.
  
  

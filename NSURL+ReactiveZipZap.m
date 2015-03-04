@@ -22,6 +22,10 @@
     return [NSString rzz_cleanTemporaryAreaOfItemsOlderThanDate:date error:error];
 }
 
++ (RACSignal *)rzz_cleanTemporaryAreaOfItemsOlderThanDate:(NSDate *)date {
+    return [NSString rzz_cleanTemporaryAreaOfItemsOlderThanDate:date];
+}
+
 - (NSURL *)rzz_extendedAttributeTargetURL {
     NSCAssert([self isFileURL], @"self needs to be a file URL");
     return [NSURL fileURLWithPath:[self.path rzz_extendedAttributeTargetPath]];
