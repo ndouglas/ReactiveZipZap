@@ -1,0 +1,25 @@
+PODS:
+  - ReactiveCocoa (2.4.7):
+    - ReactiveCocoa/UI (= 2.4.7)
+  - ReactiveCocoa/Core (2.4.7):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.4.7)
+  - ReactiveCocoa/UI (2.4.7):
+    - ReactiveCocoa/Core
+  - zipzap (8.0.3):
+    - zipzap/c++ (= 8.0.3)
+    - zipzap/objc (= 8.0.3)
+    - zipzap/objc++ (= 8.0.3)
+  - zipzap/c++ (8.0.3)
+  - zipzap/objc (8.0.3)
+  - zipzap/objc++ (8.0.3)
+
+DEPENDENCIES:
+  - ReactiveCocoa
+  - zipzap
+
+SPEC CHECKSUMS:
+  ReactiveCocoa: 313fc53cc9aeb2bbbc3f5f13c7eac16478d9af8f
+  zipzap: 8f5985f43f1ed06e7926591a12db8527509a6130
+
+COCOAPODS: 0.35.0
