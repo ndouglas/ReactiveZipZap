@@ -54,7 +54,7 @@
                     }
                 }
             }
-        } else {
+        } else if (!contents && error) {
             [subscriber sendError:error];
         }
         [subscriber sendCompleted];
