@@ -19,7 +19,7 @@ DEPENDENCIES:
   - zipzap
 
 SPEC CHECKSUMS:
-  ReactiveCocoa: 313fc53cc9aeb2bbbc3f5f13c7eac16478d9af8f
-  zipzap: 8f5985f43f1ed06e7926591a12db8527509a6130
+  ReactiveCocoa: eb38dee0a0e698f73a9b25e5c1faea2bb4c79240
+  zipzap: 888667fa52eb1799a32fa3ef8e77001356e796e4
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.36.3
