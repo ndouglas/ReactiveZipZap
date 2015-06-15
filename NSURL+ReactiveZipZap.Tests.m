@@ -58,4 +58,50 @@
     XCTAssertTrue([URL rzz_removeExtendedAttributeWithName:testAttributeName error:&error]);
 }
 
+- (BOOL)singularlyReadExtendedAttributesForItemAtURL:(NSURL *)URL {
+    NSError *error = nil;
+    static NSUInteger counter = 0;
+    counter++;
+    NSLog(@"Counter: %@", @(counter));
+    NSLog(@"Reading extended attributes of item at URL: %@", URL);
+    NSDictionary *dictionary = [URL rzz_dictionaryWithExtendedAttributesOrError:&error];
+    BOOL result = dictionary != nil;
+    XCTAssertTrue(result, @"Fetching extended attributes of URL: %@ failed with error: %@", URL, error);
+    if (result) {
+        NSLog(@"Read extended attributes of item at URL: %@ %@", URL, dictionary);
+    }
+    return result;
+}
+
+- (BOOL)recursivelyReadExtendedAttributesForItemAtURL:(NSURL *)URL {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL isDirectory = NO;
+    BOOL result = NO;
+    if ([fileManager fileExistsAtPath:URL.path isDirectory:&isDirectory]) {
+        result = [self singularlyReadExtendedAttributesForItemAtURL:URL];
+        if (result) {
+            if (isDirectory) {
+                NSError *error = nil;
+                NSArray *contents = [fileManager contentsOfDirectoryAtURL:URL includingPropertiesForKeys:nil options:0 error:&error];
+                XCTAssertTrue(contents != nil, @"Fetching contents of directory at URL: %@ failed with error: %@", URL, error);
+                if (contents) {
+                    for (NSURL *thisContentURL in contents) {
+                        result = [self recursivelyReadExtendedAttributesForItemAtURL:thisContentURL];
+                        if (!result) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        XCTFail(@"No item at URL: %@", URL);
+    }
+    return result;
+}
+
+- (void)testReadExtendedAttributesForALotOfFiles {
+    [self recursivelyReadExtendedAttributesForItemAtURL:[NSURL fileURLWithPath:@"/Users/nathan/Documents/RSS.dtBase2"]];
+}
+
 @end
