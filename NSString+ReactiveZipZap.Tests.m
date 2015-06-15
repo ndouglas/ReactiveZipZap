@@ -57,4 +57,51 @@
     XCTAssertTrue([[[NSFileManager defaultManager] contentsOfDirectoryAtPath:[NSString rzz_pathToTemporaryArea] error:&error] count] == 0);
 }
 
+- (BOOL)singularlyReadExtendedAttributesForItemAtPath:(NSString *)path {
+    NSError *error = nil;
+    static NSUInteger counter = 0;
+    counter++;
+    NSLog(@"Counter: %@", @(counter));
+    NSLog(@"Reading extended attributes of item at path: %@", path);
+    NSDictionary *dictionary = [path rzz_dictionaryWithExtendedAttributesOrError:&error];
+    BOOL result = dictionary != nil;
+    XCTAssertTrue(result, @"Fetching extended attributes of path: %@ failed with error: %@", path, error);
+    if (result) {
+        NSLog(@"Read extended attributes of item at path: %@ %@", path, dictionary);
+    }
+    return result;
+}
+
+- (BOOL)recursivelyReadExtendedAttributesForItemAtPath:(NSString *)path {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL isDirectory = NO;
+    BOOL result = NO;
+    if ([fileManager fileExistsAtPath:path isDirectory:&isDirectory]) {
+        result = [self singularlyReadExtendedAttributesForItemAtPath:path];
+        if (result) {
+            if (isDirectory) {
+                NSError *error = nil;
+                NSArray *contents = [fileManager contentsOfDirectoryAtPath:path error:&error];
+                XCTAssertTrue(contents != nil, @"Fetching contents of directory at path: %@ failed with error: %@", path, error);
+                if (contents) {
+                    for (NSString *thisContent in contents) {
+                        NSString *newPath = [path stringByAppendingPathComponent:thisContent];
+                        result = [self recursivelyReadExtendedAttributesForItemAtPath:newPath];
+                        if (!result) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        XCTFail(@"No item at path: %@", path);
+    }
+    return result;
+}
+
+- (void)testReadExtendedAttributesForALotOfFiles {
+    [self recursivelyReadExtendedAttributesForItemAtPath:@"/Users/nathan/Documents/RSS.dtBase2"];
+}
+
 @end
