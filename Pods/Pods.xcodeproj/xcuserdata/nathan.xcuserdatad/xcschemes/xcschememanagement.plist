@@ -4,27 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-ReactiveZipZap-ReactiveCocoa.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-ReactiveZipZap-zipzap.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-ReactiveZipZap.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-ReactiveZipZapTests-ReactiveCocoa.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-ReactiveZipZapTests-zipzap.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -34,39 +14,23 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>ReactiveCocoa.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>ReactiveZipZap.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>zipzap.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
-	<dict>
-		<key>0FD99B6FCC1FFA64061DE907</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>39721971D42336266E2B3C9B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>54C04E4B6202A630722465C0</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>9EE747E9D612195EB6166A33</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C3502F5A33B4E94FD216DF28</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D981050DD2DA6D0699A5DFDA</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-	</dict>
+	<dict/>
 </dict>
 </plist>

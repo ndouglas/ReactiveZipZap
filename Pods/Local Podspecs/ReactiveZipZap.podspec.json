@@ -1,0 +1,32 @@
+{
+  "name": "ReactiveZipZap",
+  "version": "1.0.6",
+  "summary": "Bridging ZipZap to ReactiveCocoa with some hopefully useful things.",
+  "description": "Bridging ZipZap to ReactiveCocoa with some hopefully useful things.\n\t\nZIP files don't include extended attributes. For my purposes, \narchiving and unarchiving them is absolutely necessary, so, I've \nadded in some code that archives and unarchives these in a (hopefully) \nuseful and painless way.\n\nI also tend to use ZIP files in network file transfer situations where \nit may be odious to transfer a few hundred small files in separate \nrequests, so I'm also trying to make it easy to create archives in \ntemporary locations that can be easily deleted when the archive is no \nlonger needed.",
+  "homepage": "https://github.com/ndouglas/ReactiveZipZap",
+  "license": {
+    "type": "Public Domain",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Nathan Douglas": "ndouglas@devontechnologies.com"
+  },
+  "platforms": {
+    "ios": "7.0",
+    "osx": "10.8"
+  },
+  "source": {
+    "git": "https://github.com/ndouglas/ReactiveZipZap.git",
+    "tag": "1.0.6"
+  },
+  "source_files": "*.{h,m}",
+  "exclude_files": "*.Tests.m",
+  "dependencies": {
+    "zipzap": [
+
+    ],
+    "ReactiveCocoa": [
+
+    ]
+  }
+}

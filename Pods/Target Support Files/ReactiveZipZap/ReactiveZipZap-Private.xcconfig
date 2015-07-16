@@ -1,0 +1,5 @@
+#include "ReactiveZipZap.xcconfig"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/ReactiveZipZap" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/ReactiveCocoa" "${PODS_ROOT}/Headers/Public/ReactiveZipZap" "${PODS_ROOT}/Headers/Public/zipzap"
+PODS_ROOT = ${SRCROOT}
+SKIP_INSTALL = YES

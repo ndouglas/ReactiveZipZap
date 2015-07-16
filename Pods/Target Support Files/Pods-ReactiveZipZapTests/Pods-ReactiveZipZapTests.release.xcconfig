@@ -1,6 +1,5 @@
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/ReactiveCocoa" "${PODS_ROOT}/Headers/Public/zipzap"
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/ReactiveCocoa" -isystem "${PODS_ROOT}/Headers/Public/zipzap"
-OTHER_LDFLAGS = $(inherited) -ObjC -l"Pods-ReactiveZipZapTests-ReactiveCocoa" -l"Pods-ReactiveZipZapTests-zipzap" -l"z" -framework "ApplicationServices" -framework "Foundation"
-OTHER_LIBTOOLFLAGS = $(OTHER_LDFLAGS)
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/ReactiveCocoa" "${PODS_ROOT}/Headers/Public/ReactiveZipZap" "${PODS_ROOT}/Headers/Public/zipzap"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/ReactiveCocoa" -isystem "${PODS_ROOT}/Headers/Public/ReactiveZipZap" -isystem "${PODS_ROOT}/Headers/Public/zipzap"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"ReactiveCocoa" -l"ReactiveZipZap" -l"z" -l"zipzap" -framework "ApplicationServices" -framework "Foundation"
 PODS_ROOT = ${SRCROOT}/Pods
