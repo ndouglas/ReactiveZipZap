@@ -86,7 +86,7 @@
  @discussion No extended attributes.
  */
 
-+ (RACSignal *)rzz_archiveEntryOfFileAtURL:(NSURL *)URL;
++ (RACSignal *)rzz_archiveEntryOfFileAtURL:(NSURL *)URL relativeToURL:(NSURL *)baseURL;
 
 /**
  An archive entry for a directory at a URL.
@@ -96,7 +96,7 @@
  @discussion No extended attributes.
  */
 
-+ (RACSignal *)rzz_archiveEntryOfDirectoryAtURL:(NSURL *)URL;
++ (RACSignal *)rzz_archiveEntryOfDirectoryAtURL:(NSURL *)URL relativeToURL:(NSURL *)baseURL;
 
 /**
  An archive entry for the extended attributes of the item at a URL.
@@ -105,7 +105,7 @@
  @return A signal containing the archive entry, or an error if one occurred.
  */
 
-+ (RACSignal *)rzz_archiveEntryOfExtendedAttributesAtURL:(NSURL *)URL;
++ (RACSignal *)rzz_archiveEntryOfExtendedAttributesAtURL:(NSURL *)URL relativeToURL:(NSURL *)baseURL;
 
 /**
  Archive entries for the file (not directory) at a URL and, optionally, its extended attributes.
@@ -115,7 +115,7 @@
  @return A signal containing the archive entries, or an error if one occurred.
  */
 
-+ (RACSignal *)rzz_archiveEntriesOfFileAtURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes;
++ (RACSignal *)rzz_archiveEntriesOfFileAtURL:(NSURL *)URL relativeToURL:(NSURL *)baseURL includeExtendedAttributes:(BOOL)includeExtendedAttributes;
 
 /**
  Archive entries for the directory at a URL and, optionally, its extended attributes.
@@ -126,7 +126,7 @@
  @discussion Does not include the directory contents.
  */
 
-+ (RACSignal *)rzz_archiveEntriesOfDirectoryAtURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes;
++ (RACSignal *)rzz_archiveEntriesOfDirectoryAtURL:(NSURL *)URL relativeToURL:(NSURL *)baseURL includeExtendedAttributes:(BOOL)includeExtendedAttributes;
 
 /**
  Archive entries for the contents of the directory at a URL and, optionally, its contents' extended attributes.
@@ -137,7 +137,7 @@
  @discussion Does not include the directory entry itself.
  */
 
-+ (RACSignal *)rzz_archiveEntriesOfDirectoryContentsAtURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes;
++ (RACSignal *)rzz_archiveEntriesOfDirectoryContentsAtURL:(NSURL *)URL relativeToURL:(NSURL *)baseURL includeExtendedAttributes:(BOOL)includeExtendedAttributes;
 
 /**
  Archive entries for the item at a URL and, optionally, its extended attributes.
@@ -148,7 +148,7 @@
  @discussion Includes directory contents.
  */
 
-+ (RACSignal *)rzz_archiveEntriesOfItemAtURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes;
++ (RACSignal *)rzz_archiveEntriesOfItemAtURL:(NSURL *)URL relativeToURL:(NSURL *)baseURL includeExtendedAttributes:(BOOL)includeExtendedAttributes;
 
 /**
  Archive entries for the items at some URLs and, optionally, their extended attributes.
@@ -159,7 +159,7 @@
  @discussion Includes directory contents.
  */
 
-+ (RACSignal *)rzz_archiveEntriesOfItemsAtURLs:(NSArray *)URLs includeExtendedAttributes:(BOOL)includeExtendedAttributes;
++ (RACSignal *)rzz_archiveEntriesOfItemsAtURLs:(NSArray *)URLs relativeToURL:(NSURL *)baseURL includeExtendedAttributes:(BOOL)includeExtendedAttributes;
 
 /**
  Writes the entry to a data object and returns it.

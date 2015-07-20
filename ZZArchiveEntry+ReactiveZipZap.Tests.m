@@ -45,7 +45,8 @@
 - (void)testArchiveEntryOfFileAtURL {
     NSURL *URL = [[NSURL rzz_temporaryURLOrError:NULL] URLByAppendingPathComponent:@"test"];
     NSError *error = nil;
-    ZZArchiveEntry *archiveEntry = [[ZZArchiveEntry rzz_archiveEntryOfFileAtURL:[NSURL fileURLWithPath:@(__FILE__)]] first];
+    NSURL *myURL = [NSURL fileURLWithPath:@(__FILE__)];
+    ZZArchiveEntry *archiveEntry = [[ZZArchiveEntry rzz_archiveEntryOfFileAtURL:myURL relativeToURL:myURL] first];
     XCTAssertTrue([[[self oldArchiveEntryForNewArchiveEntry:archiveEntry] rzz_writeToURL:URL] waitUntilCompleted:&error]);
     NSData *data1 = [NSData dataWithContentsOfURL:URL];
     NSData *data2 = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:@(__FILE__)]];
@@ -71,7 +72,7 @@
     NSError *error = nil;
     NSDictionary *extendedAttributes = [myURL rzz_dictionaryWithExtendedAttributesOrError:&error];
     XCTAssertNotNil(extendedAttributes);
-    NSArray *archiveEntries = [[[ZZArchiveEntry rzz_archiveEntriesOfFileAtURL:myURL includeExtendedAttributes:YES] collect] first];
+    NSArray *archiveEntries = [[[ZZArchiveEntry rzz_archiveEntriesOfFileAtURL:myURL relativeToURL:myURL includeExtendedAttributes:YES] collect] first];
     XCTAssertNotNil(archiveEntries);
     ZZArchive *archive = [[ZZArchive rzz_temporaryArchive] first];
     XCTAssertNotNil(archive);
@@ -104,7 +105,7 @@
     XCTAssertNotNil(myURL);
     NSDictionary *extendedAttributes = [myURL rzz_dictionaryWithExtendedAttributesOrError:&error];
     XCTAssertNotNil(extendedAttributes);
-    NSArray *archiveEntries = [[[ZZArchiveEntry rzz_archiveEntriesOfDirectoryAtURL:myURL includeExtendedAttributes:YES] collect] first];
+    NSArray *archiveEntries = [[[ZZArchiveEntry rzz_archiveEntriesOfDirectoryAtURL:myURL relativeToURL:myURL includeExtendedAttributes:YES] collect] first];
     XCTAssertNotNil(archiveEntries);
     ZZArchive *archive = [[ZZArchive rzz_temporaryArchive] first];
     XCTAssertNotNil(archive);
@@ -134,7 +135,7 @@
     XCTAssertNotNil(myURL);
     NSDictionary *extendedAttributes = [myURL rzz_dictionaryWithExtendedAttributesOrError:&error];
     XCTAssertNotNil(extendedAttributes);
-    NSArray *archiveEntries = [[[ZZArchiveEntry rzz_archiveEntriesOfDirectoryContentsAtURL:myURL includeExtendedAttributes:YES] collect] first];
+    NSArray *archiveEntries = [[[ZZArchiveEntry rzz_archiveEntriesOfDirectoryContentsAtURL:myURL relativeToURL:myURL includeExtendedAttributes:YES] collect] first];
     XCTAssertNotNil(archiveEntries);
     ZZArchive *archive = [[ZZArchive rzz_temporaryArchive] first];
     XCTAssertNotNil(archive);
@@ -151,7 +152,7 @@
     NSError *error = nil;
     NSDictionary *extendedAttributes = [myURL rzz_dictionaryWithExtendedAttributesOrError:&error];
     XCTAssertNotNil(extendedAttributes);
-    NSArray *archiveEntries = [[[ZZArchiveEntry rzz_archiveEntriesOfItemAtURL:myURL includeExtendedAttributes:YES] collect] first];
+    NSArray *archiveEntries = [[[ZZArchiveEntry rzz_archiveEntriesOfItemAtURL:myURL relativeToURL:myURL includeExtendedAttributes:YES] collect] first];
     XCTAssertNotNil(archiveEntries);
     ZZArchive *archive = [[ZZArchive rzz_temporaryArchive] first];
     XCTAssertNotNil(archive);
@@ -181,7 +182,7 @@
     XCTAssertNotNil(myURL);
     extendedAttributes = [myURL rzz_dictionaryWithExtendedAttributesOrError:&error];
     XCTAssertNotNil(extendedAttributes);
-    archiveEntries = [[[ZZArchiveEntry rzz_archiveEntriesOfItemAtURL:myURL includeExtendedAttributes:YES] collect] first];
+    archiveEntries = [[[ZZArchiveEntry rzz_archiveEntriesOfItemAtURL:myURL relativeToURL:myURL includeExtendedAttributes:YES] collect] first];
     XCTAssertNotNil(archiveEntries);
     archive = [[ZZArchive rzz_temporaryArchive] first];
     XCTAssertNotNil(archive);

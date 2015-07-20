@@ -28,7 +28,8 @@
     XCTAssertNotNil(temporaryArchive);
     NSString *path = temporaryArchive.URL.path;
     NSString *filePath = @(__FILE__);
-    ZZArchiveEntry *entry = [[ZZArchiveEntry rzz_archiveEntryOfFileAtURL:[NSURL fileURLWithPath:filePath]] first];
+    NSURL *myURL = [NSURL fileURLWithPath:filePath];
+    ZZArchiveEntry *entry = [[ZZArchiveEntry rzz_archiveEntryOfFileAtURL:myURL relativeToURL:myURL] first];
     NSError *error = nil;
     XCTAssertTrue([temporaryArchive updateEntries:@[entry] error:&error]);
     XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:path]);
@@ -69,11 +70,14 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"archive unarchived"];
     [[[ZZArchive rzz_temporaryArchiveWithContentsOfURL:sourceURL includeExtendedAttributes:YES]
         flattenMap:^RACSignal *(ZZArchive *_archive_) {
+            NSLog(@"Archived to URL: %@", _archive_.URL);
             return [_archive_ rzz_unarchiveToTemporaryURL];
         }]
         subscribeNext:^(NSURL *_URL_) {
             NSLog(@"Unarchived to URL: %@", _URL_);
             [expectation fulfill];
+        } error:^(NSError *error) {
+            XCTFail(@"Error: %@", error);
         }];
     [self waitForExpectationsWithTimeout:10.0 handler:nil];
 }
