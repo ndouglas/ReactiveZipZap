@@ -82,6 +82,24 @@
     [self waitForExpectationsWithTimeout:10.0 handler:nil];
 }
 
+- (void)testTemporaryArchiveWithContentsOfURLIncludeExtendedAttributes3 {
+    NSString *sourcePath = @"/Users/nathan/Desktop/RTFD Test.rtfd";
+    NSURL *sourceURL = [NSURL fileURLWithPath:sourcePath];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"archive unarchived"];
+    [[[ZZArchive rzz_temporaryArchiveWithContentsOfURL:sourceURL includeExtendedAttributes:YES]
+        flattenMap:^RACSignal *(ZZArchive *_archive_) {
+            NSLog(@"Archived to URL: %@", _archive_.URL);
+            return [_archive_ rzz_unarchiveToTemporaryURL];
+        }]
+        subscribeNext:^(NSURL *_URL_) {
+            NSLog(@"Unarchived to URL: %@", _URL_);
+            [expectation fulfill];
+        } error:^(NSError *error) {
+            XCTFail(@"Error: %@", error);
+        }];
+    [self waitForExpectationsWithTimeout:10.0 handler:nil];
+}
+
 - (void)testUnarchiveToURL {
     NSError *error = nil;
     NSURL *URL = [NSURL rzz_temporaryURLOrError:&error];

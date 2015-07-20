@@ -39,7 +39,7 @@
 }
 
 NSString *RZZRelativePathFromBaseURLToURL(NSURL *baseURL, NSURL *URL) {
-    return [URL.path stringByReplacingOccurrencesOfString:baseURL.path withString:@""];
+    return [URL.URLByResolvingSymlinksInPath.path stringByReplacingOccurrencesOfString:baseURL.URLByResolvingSymlinksInPath.path withString:@""];
 }
 
 + (RACSignal *)rzz_archiveEntryWithName:(NSString *)name data:(NSData *)data {

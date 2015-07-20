@@ -74,7 +74,7 @@
 }
 
 + (RACSignal *)rzz_temporaryArchiveWithContentsOfURL:(NSURL *)URL includeExtendedAttributes:(BOOL)includeExtendedAttributes {
-    RACSignal *result = [self rzz_temporaryArchiveWithEntriesFromSignal:[ZZArchiveEntry rzz_archiveEntriesOfItemAtURL:URL relativeToURL:URL.URLByDeletingLastPathComponent includeExtendedAttributes:includeExtendedAttributes]];
+    RACSignal *result = [self rzz_temporaryArchiveWithEntriesFromSignal:[ZZArchiveEntry rzz_archiveEntriesOfItemAtURL:URL relativeToURL:URL.URLByDeletingLastPathComponent.URLByResolvingSymlinksInPath includeExtendedAttributes:includeExtendedAttributes]];
     return [result setNameWithFormat:@"[%@ +rzz_temporaryArchiveWithContentsOfURL: %@ includeExtendedAttributes: %@]", self, URL, @(includeExtendedAttributes)];
 }
 
