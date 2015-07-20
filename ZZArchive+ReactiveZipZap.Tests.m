@@ -63,6 +63,21 @@
         }];
 }
 
+- (void)testTemporaryArchiveWithContentsOfURLIncludeExtendedAttributes2 {
+    NSString *sourcePath = @"/Users/nathan/testBundle";
+    NSURL *sourceURL = [NSURL fileURLWithPath:sourcePath];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"archive unarchived"];
+    [[[ZZArchive rzz_temporaryArchiveWithContentsOfURL:sourceURL includeExtendedAttributes:YES]
+        flattenMap:^RACSignal *(ZZArchive *_archive_) {
+            return [_archive_ rzz_unarchiveToTemporaryURL];
+        }]
+        subscribeNext:^(NSURL *_URL_) {
+            NSLog(@"Unarchived to URL: %@", _URL_);
+            [expectation fulfill];
+        }];
+    [self waitForExpectationsWithTimeout:10.0 handler:nil];
+}
+
 - (void)testUnarchiveToURL {
     NSError *error = nil;
     NSURL *URL = [NSURL rzz_temporaryURLOrError:&error];
