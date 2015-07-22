@@ -1,6 +1,6 @@
 //
 //  ZZStandardCryptoEngine.cpp
-//  zipzap
+//  ZipZap
 //
 //  Created by Daniel Cohen Gindi on 12/29/13.
 //

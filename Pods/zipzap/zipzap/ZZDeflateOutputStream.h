@@ -1,6 +1,6 @@
 //
 //  ZZDeflateOutputStream.h
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 9/10/12.
 //  Copyright (c) 2012, Pixelglow Software. All rights reserved.
@@ -16,8 +16,8 @@
 @property (readonly, nonatomic) uint32_t compressedSize;
 @property (readonly, nonatomic) uint32_t uncompressedSize;
 
-- (id)initWithChannelOutput:(id<ZZChannelOutput>)channelOutput
-		   compressionLevel:(NSUInteger)compressionLevel;
+- (instancetype)initWithChannelOutput:(id<ZZChannelOutput>)channelOutput
+					 compressionLevel:(NSUInteger)compressionLevel;
 
 - (NSStreamStatus)streamStatus;
 - (NSError*)streamError;

@@ -99,48 +99,20 @@ static inline NSError *RZZErrorForPOSIXErrorAtPath(int posixError, NSString *pat
     }];
 }
 
-ssize_t RZZSizeOfExtendedAttributesOfPath(NSString *path, NSError **error) {
-    ssize_t result = listxattr(path.fileSystemRepresentation, NULL, SIZE_MAX, RZZXattrOptions);
-    if (result == -1 && error) {
-        *error = RZZErrorForPOSIXErrorAtPath(errno, path);
-    }
-    return result;
-}
-
 - (NSArray *)rzz_namesOfExtendedAttributesWithError:(NSError **)error {
-    NSMutableArray *result = nil;
-    ssize_t size = RZZSizeOfExtendedAttributesOfPath(self, error);
-    if (size != -1) {
-        if (size) {
-            void *names = calloc(1, size);
-            if (names) {
-                size = listxattr(self.fileSystemRepresentation, names, size, RZZXattrOptions);
-                if (size && size != -1) {
-                    result = [NSMutableArray array];
-                    uintptr_t start = (uintptr_t)names;
-                    uintptr_t thisName = start;
-                    for (ssize_t i = 0; i < size; i++) {
-                        uintptr_t current = start + i;
-                        if (current && *((char *)current) == 0x0) {
-                            NSString *name = [NSString stringWithUTF8String:(char *)thisName];
-                            if (name) {
-                                [result addObject:name];
-                                start = current + 1;
-                            }
-                        }
-                    }
-                } else if (size == -1 && error) {
-                    *error = RZZErrorForPOSIXErrorAtPath(errno, self);
-                }
-                free(names);
-            } else if (error) {
-                *error = RZZErrorForPOSIXErrorAtPath(errno, self);
-            }
-        } else {
-            result = [NSMutableArray array];
-        }
-    }
-    return result;
+	char *keys = 0;
+    size_t size = listxattr(self.fileSystemRepresentation, NULL, 0, RZZXattrOptions);
+	keys = calloc(size, sizeof(*keys));
+	size = listxattr(self.fileSystemRepresentation, keys, size, RZZXattrOptions);
+	char *key = 0;
+	int sLen = 0;
+	NSMutableArray *result = [NSMutableArray array];
+	for(key = keys; key < keys + size; key += 1 + sLen) {
+		sLen = (int)strlen(key);
+		[result addObject:[NSString stringWithUTF8String:key]];
+	}
+	free(keys);
+	return result;
 }
 
 - (BOOL)rzz_setValue:(NSData *)value forExtendedAttributeWithName:(NSString *)name error:(NSError **)error {

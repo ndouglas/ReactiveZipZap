@@ -1,6 +1,6 @@
 //
 //  ZZFileChannelOutput.m
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 12/01/13.
 //
@@ -13,7 +13,7 @@
 	int _fileDescriptor;
 }
 
-- (id)initWithFileDescriptor:(int)fileDescriptor
+- (instancetype)initWithFileDescriptor:(int)fileDescriptor
 {
 	if ((self = [super init]))
 		_fileDescriptor = fileDescriptor;

@@ -1,6 +1,6 @@
 //
 //  ZZNewArchiveEntry.h
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 8/10/12.
 //  Copyright (c) 2012, Pixelglow Software. All rights reserved.
@@ -23,12 +23,12 @@
 @property (readonly, nonatomic) mode_t fileMode;
 @property (readonly, nonatomic) NSString* fileName;
 
-- (id)initWithFileName:(NSString*)fileName
-			  fileMode:(mode_t)fileMode
-		  lastModified:(NSDate*)lastModified
-	  compressionLevel:(NSInteger)compressionLevel
-			 dataBlock:(NSData*(^)(NSError** error))dataBlock
-		   streamBlock:(BOOL(^)(NSOutputStream* stream, NSError** error))streamBlock
-	 dataConsumerBlock:(BOOL(^)(CGDataConsumerRef dataConsumer, NSError** error))dataConsumerBlock;
+- (instancetype)initWithFileName:(NSString*)fileName
+						fileMode:(mode_t)fileMode
+					lastModified:(NSDate*)lastModified
+				compressionLevel:(NSInteger)compressionLevel
+					   dataBlock:(NSData*(^)(NSError** error))dataBlock
+					 streamBlock:(BOOL(^)(NSOutputStream* stream, NSError** error))streamBlock
+			   dataConsumerBlock:(BOOL(^)(CGDataConsumerRef dataConsumer, NSError** error))dataConsumerBlock NS_DESIGNATED_INITIALIZER;
 
 @end

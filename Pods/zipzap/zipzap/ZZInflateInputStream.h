@@ -1,6 +1,6 @@
 //
 //  ZZInflateInputStream.h
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 29/09/12.
 //  Copyright (c) 2012, Pixelglow Software. All rights reserved.
@@ -13,7 +13,7 @@
 + (NSData*)decompressData:(NSData*)data
 	 withUncompressedSize:(NSUInteger)uncompressedSize;
 
-- (id)initWithStream:(NSInputStream*)upstream;
+- (instancetype)initWithStream:(NSInputStream*)upstream;
 
 - (NSStreamStatus)streamStatus;
 - (NSError*)streamError;

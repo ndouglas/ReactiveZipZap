@@ -1,6 +1,6 @@
 //
 //  ZZInflateInputStream.m
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 29/09/12.
 //  Copyright (c) 2012, Pixelglow Software. All rights reserved.
@@ -49,7 +49,7 @@ static const NSUInteger _bufferLength = 16384; // 16K buffer
 	}
 }
 
-- (id)initWithStream:(NSInputStream*)upstream
+- (instancetype)initWithStream:(NSInputStream*)upstream
 {
 	if ((self = [super init]))
 	{

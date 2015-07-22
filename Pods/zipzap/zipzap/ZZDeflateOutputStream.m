@@ -1,6 +1,6 @@
 //
 //  ZZDeflateOutputStream.m
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 9/10/12.
 //  Copyright (c) 2012, Pixelglow Software. All rights reserved.
@@ -25,7 +25,8 @@ static const uInt _flushLength = 1024;
 
 @synthesize crc32 = _crc32;
 
-- (id)initWithChannelOutput:(id<ZZChannelOutput>)channelOutput compressionLevel:(NSUInteger)compressionLevel
+- (instancetype)initWithChannelOutput:(id<ZZChannelOutput>)channelOutput
+					 compressionLevel:(NSUInteger)compressionLevel
 {
 	if ((self = [super init]))
 	{

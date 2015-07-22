@@ -1,6 +1,6 @@
 //
 //  ZZZipEntryWriter.m
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 9/10/12.
 //  Copyright (c) 2012, Pixelglow Software. All rights reserved.
@@ -17,9 +17,9 @@
 	NSData* _localFile;
 }
 
-- (id)initWithCentralFileHeader:(struct ZZCentralFileHeader*)centralFileHeader
-				localFileHeader:(struct ZZLocalFileHeader*)localFileHeader
-			shouldSkipLocalFile:(BOOL)shouldSkipLocalFile
+- (instancetype)initWithCentralFileHeader:(struct ZZCentralFileHeader*)centralFileHeader
+						  localFileHeader:(struct ZZLocalFileHeader*)localFileHeader
+					  shouldSkipLocalFile:(BOOL)shouldSkipLocalFile
 {
 	if ((self = [super init]))
 	{

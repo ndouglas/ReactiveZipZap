@@ -101,7 +101,7 @@
 }
 
 - (void)testReadExtendedAttributesForALotOfFiles {
-    [self recursivelyReadExtendedAttributesForItemAtPath:@"/Users/nathan/Documents/RSS.dtBase2"];
+    [self recursivelyReadExtendedAttributesForItemAtPath:@"/Users/nathan/Documents/Goats.txt"];
 }
 
 @end

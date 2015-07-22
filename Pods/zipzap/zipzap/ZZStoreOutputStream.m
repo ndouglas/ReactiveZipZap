@@ -1,6 +1,6 @@
 //
 //  ZZStoreOutputStream.m
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 13/10/12.
 //  Copyright (c) 2012, Pixelglow Software. All rights reserved.
@@ -23,7 +23,7 @@
 @synthesize crc32 = _crc32;
 @synthesize size = _size;
 
-- (id)initWithChannelOutput:(id<ZZChannelOutput>)channelOutput
+- (instancetype)initWithChannelOutput:(id<ZZChannelOutput>)channelOutput
 {
 	if ((self = [super init]))
 	{

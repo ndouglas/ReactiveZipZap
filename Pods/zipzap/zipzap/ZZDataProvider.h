@@ -1,12 +1,20 @@
 //
 //  ZZDataProvider.h
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 3/01/14.
 //
 //
 
 #include <new>
+
+#if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
+#include <CoreGraphics/CoreGraphics.h>
+#elif defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
+#include <ApplicationServices/ApplicationServices.h>
+#endif
+
+#import <Foundation/Foundation.h>
 
 class ZZDataProvider
 {

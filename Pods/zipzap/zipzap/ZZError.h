@@ -1,6 +1,6 @@
 //
 //  ZZError.h
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 25/01/13.
 //  Copyright (c) 2013, Pixelglow Software. All rights reserved.
@@ -33,7 +33,7 @@
 #import <Foundation/Foundation.h>
 
 /**
- * The domain of zipzap errors.
+ * The domain of ZipZap errors.
  */
 extern NSString* const ZZErrorDomain;
 

@@ -1,6 +1,6 @@
 //
 //  ZZOldArchiveEntryWriter.h
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 9/10/12.
 //  Copyright (c) 2012, Pixelglow Software. All rights reserved.
@@ -12,9 +12,9 @@
 
 @interface ZZOldArchiveEntryWriter : NSObject <ZZArchiveEntryWriter>
 
-- (id)initWithCentralFileHeader:(struct ZZCentralFileHeader*)centralFileHeader
-				localFileHeader:(struct ZZLocalFileHeader*)localFileHeader
-			shouldSkipLocalFile:(BOOL)shouldSkipLocalFile;
+- (instancetype)initWithCentralFileHeader:(struct ZZCentralFileHeader*)centralFileHeader
+						  localFileHeader:(struct ZZLocalFileHeader*)localFileHeader
+					  shouldSkipLocalFile:(BOOL)shouldSkipLocalFile NS_DESIGNATED_INITIALIZER;
 
 - (uint32_t)offsetToLocalFileEnd;
 - (BOOL)writeLocalFileToChannelOutput:(id<ZZChannelOutput>)channelOutput

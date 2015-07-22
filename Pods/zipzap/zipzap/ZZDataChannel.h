@@ -1,6 +1,6 @@
 //
 //  ZZDataChannel.h
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 12/01/13.
 //
@@ -14,7 +14,7 @@
 
 @property (readonly, nonatomic) NSURL* URL;
 
-- (id)initWithData:(NSData*)data;
+- (instancetype)initWithData:(NSData*)data NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)temporaryChannel:(out NSError**)error;
 - (BOOL)replaceWithChannel:(id<ZZChannel>)channel

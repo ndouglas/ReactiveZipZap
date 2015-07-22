@@ -1,6 +1,6 @@
 //
 //  ZZConstants.m
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 2/09/14.
 //

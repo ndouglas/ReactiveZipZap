@@ -1,6 +1,6 @@
 //
 //  ZZScopeGuard.h
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 30/12/13.
 //

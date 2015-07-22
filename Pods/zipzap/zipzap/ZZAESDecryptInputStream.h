@@ -1,6 +1,6 @@
 //
 //  ZZAESDecryptInputStream.h
-//  zipzap
+//  ZipZap
 //
 //  Created by Daniel Cohen Gindi on 1/6/14.
 //
@@ -12,11 +12,11 @@
 
 @interface ZZAESDecryptInputStream : NSInputStream
 
-- (id)initWithStream:(NSInputStream*)upstream
-			password:(NSString*)password
-			  header:(uint8_t*)header
-			strength:(ZZAESEncryptionStrength)strength
-			   error:(out NSError**)error;
+- (instancetype)initWithStream:(NSInputStream*)upstream
+					  password:(NSString*)password
+						header:(uint8_t*)header
+					  strength:(ZZAESEncryptionStrength)strength
+						 error:(out NSError**)error;
 
 - (void)open;
 - (void)close;

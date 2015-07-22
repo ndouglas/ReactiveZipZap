@@ -1,6 +1,6 @@
 //
 //  ZZChannelOutput.h
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 12/01/13.
 //

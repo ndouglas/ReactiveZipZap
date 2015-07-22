@@ -1,6 +1,6 @@
 //
 //  ZZDataChannelOutput.m
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 12/01/13.
 //
@@ -14,7 +14,7 @@
 	uint32_t _offset;
 }
 
-- (id)initWithData:(NSMutableData*)data
+- (instancetype)initWithData:(NSMutableData*)data
 {
 	if ((self = [super init]))
 	{

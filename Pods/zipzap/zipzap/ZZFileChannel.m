@@ -1,6 +1,6 @@
 //
 //  ZZFileChannel.m
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 12/01/13.
 //
@@ -15,7 +15,7 @@
 	NSURL* _URL;
 }
 
-- (id)initWithURL:(NSURL*)URL
+- (instancetype)initWithURL:(NSURL*)URL
 {
 	if ((self = [super init]))
 		_URL = URL;

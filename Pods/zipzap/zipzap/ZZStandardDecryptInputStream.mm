@@ -1,6 +1,6 @@
 //
 //  ZZStandardDecryptInputStream.mm
-//  zipzap
+//  ZipZap
 //
 //  Created by Daniel Cohen Gindi on 12/29/13.
 //
@@ -17,12 +17,12 @@
 	ZZStandardCryptoEngine _crypto;
 }
 
-- (id)initWithStream:(NSInputStream*)upstream
-			password:(NSString*)password
-			  header:(uint8_t*)header
-			   check:(uint16_t)check
-			 version:(uint8_t)version
-			   error:(out NSError**)error
+- (instancetype)initWithStream:(NSInputStream*)upstream
+					  password:(NSString*)password
+						header:(uint8_t*)header
+						 check:(uint16_t)check
+					   version:(uint8_t)version
+						 error:(out NSError**)error
 {
 	if ((self = [super init]))
 	{

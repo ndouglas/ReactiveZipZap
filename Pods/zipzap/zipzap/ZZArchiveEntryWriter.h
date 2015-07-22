@@ -1,6 +1,6 @@
 //
 //  ZZZipEntryWriter.h
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 6/10/12.
 //  Copyright (c) 2012, Pixelglow Software. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  ZZOldArchiveEntry.m
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 24/10/12.
 //  Copyright (c) 2012, Pixelglow Software. All rights reserved.
@@ -39,9 +39,9 @@
 	ZZEncryptionMode _encryptionMode;
 }
 
-- (id)initWithCentralFileHeader:(struct ZZCentralFileHeader*)centralFileHeader
-				localFileHeader:(struct ZZLocalFileHeader*)localFileHeader
-					   encoding:(NSStringEncoding)encoding
+- (instancetype)initWithCentralFileHeader:(struct ZZCentralFileHeader*)centralFileHeader
+						  localFileHeader:(struct ZZLocalFileHeader*)localFileHeader
+								 encoding:(NSStringEncoding)encoding
 {
 	if ((self = [super init]))
 	{

@@ -1,6 +1,6 @@
 //
 //  ZZDataChannel.m
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 12/01/13.
 //
@@ -14,7 +14,7 @@
 	NSData* _allData;
 }
 
-- (id)initWithData:(NSData*)data
+- (instancetype)initWithData:(NSData*)data
 {
 	if ((self = [super init]))
 		_allData = data;

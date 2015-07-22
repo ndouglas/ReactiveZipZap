@@ -1,6 +1,6 @@
 //
 //  ZZArchiveEntry.m
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 25/09/12.
 //  Copyright (c) 2012, Pixelglow Software. All rights reserved.
@@ -72,12 +72,12 @@
 					   dataConsumerBlock:(BOOL(^)(CGDataConsumerRef dataConsumer, NSError** error))dataConsumerBlock
 {
 	return [[ZZNewArchiveEntry alloc] initWithFileName:fileName
-										  fileMode:fileMode
-									  lastModified:lastModified
-								  compressionLevel:compressionLevel
-										 dataBlock:dataBlock
-									   streamBlock:streamBlock
-								 dataConsumerBlock:dataConsumerBlock];
+											  fileMode:fileMode
+										  lastModified:lastModified
+									  compressionLevel:compressionLevel
+											 dataBlock:dataBlock
+										   streamBlock:streamBlock
+									 dataConsumerBlock:dataConsumerBlock];
 }
 
 - (BOOL)compressed

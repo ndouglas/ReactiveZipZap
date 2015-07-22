@@ -1,6 +1,6 @@
 //
 //  ZZNewArchiveEntryWriter.m
-//  zipzap
+//  ZipZap
 //
 //  Created by Glen Low on 9/10/12.
 //  Copyright (c) 2012, Pixelglow Software. All rights reserved.
@@ -46,13 +46,13 @@ namespace ZZDataConsumer
 	BOOL (^_dataConsumerBlock)(CGDataConsumerRef dataConsumer, NSError** error);
 }
 
-- (id)initWithFileName:(NSString*)fileName
-			  fileMode:(mode_t)fileMode
-		  lastModified:(NSDate*)lastModified
-	  compressionLevel:(NSInteger)compressionLevel
-			 dataBlock:(NSData*(^)(NSError** error))dataBlock
-		   streamBlock:(BOOL(^)(NSOutputStream* stream, NSError** error))streamBlock
-	 dataConsumerBlock:(BOOL(^)(CGDataConsumerRef dataConsumer, NSError** error))dataConsumerBlock;
+- (instancetype)initWithFileName:(NSString*)fileName
+						fileMode:(mode_t)fileMode
+					lastModified:(NSDate*)lastModified
+				compressionLevel:(NSInteger)compressionLevel
+					   dataBlock:(NSData*(^)(NSError** error))dataBlock
+					 streamBlock:(BOOL(^)(NSOutputStream* stream, NSError** error))streamBlock
+			   dataConsumerBlock:(BOOL(^)(CGDataConsumerRef dataConsumer, NSError** error))dataConsumerBlock
 {
 	if ((self = [super init]))
 	{
@@ -111,7 +111,7 @@ namespace ZZDataConsumer
 		NSDateComponents* lastModifiedComponents = [gregorianCalendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay
 													| NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond
 																		fromDate:lastModified];
-		centralFileHeader->lastModFileTime = localFileHeader->lastModFileTime = lastModifiedComponents.second >> 1 | lastModifiedComponents.minute << 5 | lastModifiedComponents.hour << 11;
+		centralFileHeader->lastModFileTime = localFileHeader->lastModFileTime = (lastModifiedComponents.second + 1) >> 1 | lastModifiedComponents.minute << 5 | lastModifiedComponents.hour << 11;
 		centralFileHeader->lastModFileDate = localFileHeader->lastModFileDate = lastModifiedComponents.day | lastModifiedComponents.month << 5 | (lastModifiedComponents.year - 1980) << 9;
 		
 		// crc32, compressed size and uncompressed size are zero; real values will be computed and written in data descriptor

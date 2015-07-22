@@ -1,6 +1,6 @@
 //
 //  ZZAESDecryptInputStream.mm
-//  zipzap
+//  ZipZap
 //
 //  Created by Daniel Cohen Gindi on 1/6/14.
 //
@@ -26,11 +26,11 @@ static const uint WINZIP_PBKDF2_ROUNDS = 1000;
 	CCCryptorRef _aes;
 }
 
-- (id)initWithStream:(NSInputStream*)upstream
-			password:(NSString*)password
-			  header:(uint8_t*)header
-			strength:(ZZAESEncryptionStrength)strength
-			   error:(out NSError**)error
+- (instancetype)initWithStream:(NSInputStream*)upstream
+					  password:(NSString*)password
+						header:(uint8_t*)header
+					  strength:(ZZAESEncryptionStrength)strength
+						 error:(out NSError**)error
 {
 	if ((self = [super init]))
 	{
