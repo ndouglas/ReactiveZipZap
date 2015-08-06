@@ -29,17 +29,23 @@
 }
 
 - (void)testTemporaryPath {
-    NSString *temporaryPath = [NSString rzz_temporaryPathOrError:NULL];
+    NSError *error = nil;
+    NSString *temporaryPath = [NSString rzz_temporaryPathOrError:&error];
     XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:temporaryPath]);
-    [[NSFileManager defaultManager] removeItemAtPath:temporaryPath error:NULL];
+    [[NSFileManager defaultManager] removeItemAtPath:temporaryPath error:&error];
     XCTAssertTrue(![[NSFileManager defaultManager] fileExistsAtPath:temporaryPath]);
 }
 
 - (void)testCleanTemporaryAreaOrError {
-    for (int i = 0; i < 50; i++) {
-        [NSString rzz_temporaryPathOrError:NULL];
-    }
     NSError *error = nil;
+    for (int i = 0; i < 10000; i++) {
+        if (i % 100 == 0) {
+            @autoreleasepool {
+                NSLog(@"%@", @(i));
+            }
+        }
+        [NSString rzz_temporaryPathOrError:&error];
+    }
     XCTAssertTrue([NSString rzz_cleanTemporaryAreaOrError:&error]);
     XCTAssertNotNil([[NSFileManager defaultManager] contentsOfDirectoryAtPath:[NSString rzz_pathToTemporaryArea] error:&error]);
     XCTAssertTrue([[[NSFileManager defaultManager] contentsOfDirectoryAtPath:[NSString rzz_pathToTemporaryArea] error:&error] count] == 0);

@@ -18,24 +18,38 @@
     return [NSTemporaryDirectory() stringByAppendingPathComponent:@"com.nathandouglas.reactivezipzap"];
 }
 
-+ (BOOL)rzz_cleanTemporaryAreaOrError:(NSError **)error {
-    return [[NSFileManager defaultManager] removeItemAtPath:[self rzz_pathToTemporaryArea] error:error] && [[NSFileManager defaultManager] createDirectoryAtPath:[self rzz_pathToTemporaryArea] withIntermediateDirectories:YES attributes:nil error:error];
++ (BOOL)rzz_cleanTemporaryAreaOrError:(NSError **)_error {
+    NSError *error = nil;
+    BOOL result = [[NSFileManager defaultManager] removeItemAtPath:[self rzz_pathToTemporaryArea] error:&error];
+    result = result && [[NSFileManager defaultManager] createDirectoryAtPath:[self rzz_pathToTemporaryArea] withIntermediateDirectories:YES attributes:nil error:&error];
+    if (!result && _error) {
+        *_error = error;
+    }
+    return result;
 }
 
-+ (BOOL)rzz_cleanTemporaryAreaOfItemsOlderThanDate:(NSDate *)date error:(NSError **)error {
-    NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self rzz_pathToTemporaryArea] error:error];
-    BOOL result = contents != nil;
-    if (contents) {
-        NSString *dateString = [NSString stringWithFormat:@"%.7f", date.timeIntervalSinceReferenceDate];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        for (NSString *path in contents) {
-            if ([path compare:dateString] == NSOrderedAscending) {
-                if (![fileManager removeItemAtPath:[[self rzz_pathToTemporaryArea] stringByAppendingPathComponent:path] error:error]) {
-                    result = NO;
-                    break;
++ (BOOL)rzz_cleanTemporaryAreaOfItemsOlderThanDate:(NSDate *)date error:(NSError **)_error {
+    NSError *error = nil;
+    NSArray *contents = nil;
+    BOOL result = NO;
+    @autoreleasepool {
+        contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self rzz_pathToTemporaryArea] error:&error];
+        result = contents != nil;
+        if (result) {
+            NSString *dateString = [NSString stringWithFormat:@"%.7f", date.timeIntervalSinceReferenceDate];
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            for (NSString *path in contents) {
+                if ([path compare:dateString] == NSOrderedAscending) {
+                    if (![fileManager removeItemAtPath:[[self rzz_pathToTemporaryArea] stringByAppendingPathComponent:path] error:&error]) {
+                        result = NO;
+                        break;
+                    }
                 }
             }
         }
+    }
+    if (!result && _error) {
+        *_error = error;
     }
     return result;
 }
@@ -48,11 +62,14 @@
             NSString *dateString = [NSString stringWithFormat:@"%.7f", date.timeIntervalSinceReferenceDate];
             NSFileManager *fileManager = [NSFileManager defaultManager];
             for (NSString *path in contents) {
-                if ([path compare:dateString] == NSOrderedAscending) {
-                    if (![fileManager removeItemAtPath:[[self rzz_pathToTemporaryArea] stringByAppendingPathComponent:path] error:&error]) {
-                        [subscriber sendError:error];
-                    } else {
-                        [subscriber sendNext:path];
+                @autoreleasepool {
+                    if ([path compare:dateString] == NSOrderedAscending) {
+                        NSError *thisError = nil;
+                        if (![fileManager removeItemAtPath:[[self rzz_pathToTemporaryArea] stringByAppendingPathComponent:path] error:&thisError]) {
+                            [subscriber sendError:thisError];
+                        } else {
+                            [subscriber sendNext:path];
+                        }
                     }
                 }
             }
@@ -80,13 +97,19 @@
     return [self.stringByDeletingLastPathComponent stringByAppendingPathComponent:self.rzz_extendedAttributeLastPathComponent];
 }
 
-+ (NSString *)rzz_temporaryPathOrError:(NSError **)error {
-    NSString *nonce = [NSString stringWithFormat:@"%.7f_%@", [[NSDate date] timeIntervalSinceReferenceDate], [[NSUUID UUID] UUIDString]];
-    NSString *path = [[self rzz_pathToTemporaryArea] stringByAppendingPathComponent:nonce];
++ (NSString *)rzz_temporaryPathOrError:(NSError **)_error {
     NSString *result = nil;
-    if ([[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:error]) {
-        result = path;
-    };
+    NSError *error = nil;
+    @autoreleasepool {
+        NSString *nonce = [NSString stringWithFormat:@"%.7f_%@", [[NSDate date] timeIntervalSinceReferenceDate], [[NSUUID UUID] UUIDString]];
+        NSString *path = [[self rzz_pathToTemporaryArea] stringByAppendingPathComponent:nonce];
+        if ([[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error]) {
+            result = path;
+        };
+    }
+    if (!result && _error) {
+        *_error = error;
+    }
     return result;
 }
 
@@ -99,88 +122,106 @@ static inline NSError *RZZErrorForPOSIXErrorAtPath(int posixError, NSString *pat
     }];
 }
 
-- (NSArray *)rzz_namesOfExtendedAttributesWithError:(NSError **)error {
-	char *keys = 0;
-    size_t size = listxattr(self.fileSystemRepresentation, NULL, 0, RZZXattrOptions);
-	keys = calloc(size, sizeof(*keys));
-	size = listxattr(self.fileSystemRepresentation, keys, size, RZZXattrOptions);
-	char *key = 0;
-	int sLen = 0;
+- (NSArray *)rzz_namesOfExtendedAttributesWithError:(NSError **)_error {
 	NSMutableArray *result = [NSMutableArray array];
-	for(key = keys; key < keys + size; key += 1 + sLen) {
-		sLen = (int)strlen(key);
-		[result addObject:[NSString stringWithUTF8String:key]];
-	}
-	free(keys);
+    @autoreleasepool {
+        char *keys = 0;
+        size_t size = listxattr(self.fileSystemRepresentation, NULL, 0, RZZXattrOptions);
+        keys = calloc(size, sizeof(*keys));
+        size = listxattr(self.fileSystemRepresentation, keys, size, RZZXattrOptions);
+        char *key = 0;
+        int sLen = 0;
+        for(key = keys; key < keys + size; key += 1 + sLen) {
+            sLen = (int)strlen(key);
+            [result addObject:[NSString stringWithUTF8String:key]];
+        }
+        free(keys);
+    }
 	return result;
 }
 
-- (BOOL)rzz_setValue:(NSData *)value forExtendedAttributeWithName:(NSString *)name error:(NSError **)error {
+- (BOOL)rzz_setValue:(NSData *)value forExtendedAttributeWithName:(NSString *)name error:(NSError **)_error {
     BOOL result = YES;
     if (setxattr(self.fileSystemRepresentation, name.UTF8String, value.bytes, value.length, 0, RZZXattrOptions)) {
         result = NO;
-        if (error) {
-            *error = RZZErrorForPOSIXErrorAtPath(errno, self);
-        }
+    }
+    if (!result && _error) {
+        *_error = RZZErrorForPOSIXErrorAtPath(errno, self);
     }
     return result;
 }
 
-- (NSData *)rzz_valueForExtendedAttributeWithName:(NSString *)name error:(NSError **)error {
+- (NSData *)rzz_valueForExtendedAttributeWithName:(NSString *)name error:(NSError **)_error {
     NSData *result = nil;
-    ssize_t size = getxattr(self.fileSystemRepresentation, name.UTF8String, NULL, 0, 0, RZZXattrOptions);
-    if (size != -1) {
-        char *value = calloc(1, size);
-        size = getxattr(self.fileSystemRepresentation, name.UTF8String, value, size, 0, RZZXattrOptions);
+    NSError *error = nil;
+    @autoreleasepool {
+        ssize_t size = getxattr(self.fileSystemRepresentation, name.UTF8String, NULL, 0, 0, RZZXattrOptions);
         if (size != -1) {
-            result = [NSData dataWithBytes:value length:size];
-        } else if (error) {
-            *error = RZZErrorForPOSIXErrorAtPath(errno, self);
+            char *value = calloc(1, size);
+            size = getxattr(self.fileSystemRepresentation, name.UTF8String, value, size, 0, RZZXattrOptions);
+            if (size != -1) {
+                result = [NSData dataWithBytes:value length:size];
+            } else {
+                error = RZZErrorForPOSIXErrorAtPath(errno, self);
+            }
+            if (value) {
+                free(value);
+            }
         }
-        if (value) {
-            free(value);
-        }
-    } else if (size == -1 && error) {
-        *error = RZZErrorForPOSIXErrorAtPath(errno, self);
+    }
+    if (!result && _error) {
+        *_error = error;
     }
     return result;
 }
 
-- (BOOL)rzz_removeExtendedAttributeWithName:(NSString *)name error:(NSError **)error {
+- (BOOL)rzz_removeExtendedAttributeWithName:(NSString *)name error:(NSError **)_error {
     BOOL result = YES;
     if (removexattr(self.fileSystemRepresentation, name.UTF8String, RZZXattrOptions)) {
         result = NO;
-        if (error) {
-            *error = RZZErrorForPOSIXErrorAtPath(errno, self);
-        }
+    }
+    if (!result && _error) {
+        *_error = RZZErrorForPOSIXErrorAtPath(errno, self);
     }
     return result;
 }
 
-- (NSDictionary *)rzz_dictionaryWithExtendedAttributesOrError:(NSError **)error {
-    NSArray *attributeNames = [self rzz_namesOfExtendedAttributesWithError:error];
+- (NSDictionary *)rzz_dictionaryWithExtendedAttributesOrError:(NSError **)_error {
     NSMutableDictionary *result = nil;
-    if (attributeNames) {
-        result = [NSMutableDictionary dictionaryWithCapacity:attributeNames.count];
-        for (NSString *attributeName in attributeNames) {
-            NSData *value = [self rzz_valueForExtendedAttributeWithName:attributeName error:error];
-            if (!value) {
-                result = nil;
+    NSError *error = nil;
+    NSArray *attributeNames = [self rzz_namesOfExtendedAttributesWithError:&error];
+    @autoreleasepool {
+        if (attributeNames) {
+            result = [NSMutableDictionary dictionaryWithCapacity:attributeNames.count];
+            for (NSString *attributeName in attributeNames) {
+                NSData *value = [self rzz_valueForExtendedAttributeWithName:attributeName error:&error];
+                if (!value) {
+                    result = nil;
+                    break;
+                }
+                result[attributeName] = value;
+            }
+        }
+    }
+    if (!result && _error) {
+        *_error = error;
+    }
+    return result;
+}
+
+- (BOOL)rzz_setExtendedAttributesWithDictionary:(NSDictionary *)dictionary error:(NSError **)_error {
+    BOOL result = YES;
+    NSError *error = nil;
+    @autoreleasepool {
+        for (NSString *attributeName in dictionary) {
+            if (![self rzz_setValue:dictionary[attributeName] forExtendedAttributeWithName:attributeName error:&error]) {
+                result = NO;
                 break;
             }
-            result[attributeName] = value;
         }
     }
-    return result;
-}
-
-- (BOOL)rzz_setExtendedAttributesWithDictionary:(NSDictionary *)dictionary error:(NSError **)error {
-    BOOL result = YES;
-    for (NSString *attributeName in dictionary) {
-        if (![self rzz_setValue:dictionary[attributeName] forExtendedAttributeWithName:attributeName error:error]) {
-            result = NO;
-            break;
-        }
+    if (!result && _error) {
+        *_error = error;
     }
     return result;
 }

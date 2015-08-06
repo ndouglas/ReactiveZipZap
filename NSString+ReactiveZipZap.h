@@ -38,23 +38,23 @@
 /**
  Cleans the directory where temporary URLs are generated.
  
- @param error An error object populated in the event of failure.
+ @param _error An error object populated in the event of failure.
  @return YES if the operation succeeded, otherwise NO.
  @discussion Obviously, this removes every item currently at that location.
  */
 
-+ (BOOL)rzz_cleanTemporaryAreaOrError:(NSError **)error;
++ (BOOL)rzz_cleanTemporaryAreaOrError:(NSError **)_error;
 
 /**
  Cleans the directory where temporary URLs are generated.
  
  @param date A date indicating how old the temporary items are that should be kept.
- @param error An error object populated in the event of failure.
+ @param _error An error object populated in the event of failure.
  @return YES if the operation succeeded, otherwise NO.
  @discussion Obviously, this removes every item currently at that location.
  */
 
-+ (BOOL)rzz_cleanTemporaryAreaOfItemsOlderThanDate:(NSDate *)date error:(NSError **)error;
++ (BOOL)rzz_cleanTemporaryAreaOfItemsOlderThanDate:(NSDate *)date error:(NSError **)_error;
 
 /**
  Cleans the directory where temporary URLs are generated.
@@ -69,65 +69,70 @@
 /**
  A path to a temporary directory.
  
- @param error An error object populated in the event of failure.
+ @param _error An error object populated in the event of failure.
  @return A path to a temporary directory.
  @discussion It is the caller's responsibility to remove the directory.
  */
 
-+ (NSString *)rzz_temporaryPathOrError:(NSError **)error;
++ (NSString *)rzz_temporaryPathOrError:(NSError **)_error;
 
 /**
  Fetches the names of the extended attributes.
  
- @param error An error object populated in the event of failure.
+ @param _error An error object populated in the event of failure.
+ @return An array of the names of the extended attributes.
  */
 
-- (NSArray *)rzz_namesOfExtendedAttributesWithError:(NSError **)error;
+- (NSArray *)rzz_namesOfExtendedAttributesWithError:(NSError **)_error;
 
 /**
  Sets the extended attribute with the specified name to the specified value.
  
  @param value The value to set for the extended attribute.
  @param name The name of the extended attribute.
- @param error An error object populated in the event of failure.
+ @param _error An error object populated in the event of failure.
+ @return YES if the operation succeeded, otherwise NO.
 */
 
-- (BOOL)rzz_setValue:(NSData *)_value forExtendedAttributeWithName:(NSString *)name error:(NSError **)error;
+- (BOOL)rzz_setValue:(NSData *)_value forExtendedAttributeWithName:(NSString *)name error:(NSError **)_error;
 
 /**
  Fetches the value for the extended attribute with the specified name.
  
  @param name The name of the extended attribute.
- @param error An error object populated in the event of failure.
+ @param _error An error object populated in the event of failure.
  @return A data value.
  */
 
-- (NSData *)rzz_valueForExtendedAttributeWithName:(NSString *)name error:(NSError **)error;
+- (NSData *)rzz_valueForExtendedAttributeWithName:(NSString *)name error:(NSError **)_error;
 
 /**
  Removes the extended attribute with the specified name.
  
  @param name The name of the extended attribute.
- @param error An error object populated in the event of failure.
+ @param _error An error object populated in the event of failure.
+ @return YES if the operation succeeded, otherwise NO.
  */
 
-- (BOOL)rzz_removeExtendedAttributeWithName:(NSString *)name error:(NSError **)error;
+- (BOOL)rzz_removeExtendedAttributeWithName:(NSString *)name error:(NSError **)_error;
 
 /**
  Retrieves the dictionary of extended attributes with names and values.
  
- @param error An error object populated in the event of failure.
+ @param _error An error object populated in the event of failure.
+ @return A dictionary with the extended attributes and their values.
  */
 
-- (NSDictionary *)rzz_dictionaryWithExtendedAttributesOrError:(NSError **)error;
+- (NSDictionary *)rzz_dictionaryWithExtendedAttributesOrError:(NSError **)_error;
 
 /**
  Retrieves the dictionary of extended attributes with names and values.
  
  @param dictionary A dictionary of extended attribute names and values.
- @param error An error object populated in the event of failure.
+ @param _error An error object populated in the event of failure.
+ @return YES if the operation succeeded, otherwise NO.
  */
 
-- (BOOL)rzz_setExtendedAttributesWithDictionary:(NSDictionary *)dictionary error:(NSError **)error;
+- (BOOL)rzz_setExtendedAttributesWithDictionary:(NSDictionary *)dictionary error:(NSError **)_error;
 
 @end

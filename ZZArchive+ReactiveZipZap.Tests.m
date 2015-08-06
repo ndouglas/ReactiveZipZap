@@ -103,12 +103,12 @@
 - (void)testUnarchiveToURL {
     NSError *error = nil;
     NSURL *URL = [NSURL rzz_temporaryURLOrError:&error];
-    XCTAssertTrue([[[ZZArchive rzz_temporaryArchiveWithContentsOfURL:[[NSURL fileURLWithPath:@(__FILE__)] URLByDeletingLastPathComponent] includeExtendedAttributes:YES]
+    XCTAssertTrue([[[ZZArchive rzz_temporaryArchiveWithContentsOfURL:[NSURL fileURLWithPath:@(__FILE__)].URLByDeletingLastPathComponent includeExtendedAttributes:YES]
         flattenMap:^RACSignal *(ZZArchive *archive) {
             return [archive rzz_unarchiveToURL:URL];
         }]
         waitUntilCompleted:&error]);
-    NSString *newPath = [URL.path stringByAppendingPathComponent:[@(__FILE__) lastPathComponent]];
+    NSString *newPath = [URL.path stringByAppendingPathComponent:@(__FILE__).lastPathComponent];
     XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:newPath]);
 }
 
