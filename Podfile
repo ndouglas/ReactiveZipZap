@@ -4,6 +4,5 @@ target 'ReactiveZipZap', :exclusive=>true do
 end
 
 target 'ReactiveZipZapTests', :exclusive=>true do
-	platform :osx, '10.10'
-	pod 'ReactiveZipZap', :path=>'.'
+	pod 'ReactiveZipZap', :path=>'./'
 end
