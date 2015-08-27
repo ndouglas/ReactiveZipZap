@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         			= "ReactiveZipZap"
-  s.version      			= "1.0.11"
+  s.version      			= "1.0.12"
   s.summary      			= "Bridging ZipZap to ReactiveCocoa with some hopefully useful things."
   s.description  			= <<-DESC
 					Bridging ZipZap to ReactiveCocoa with some hopefully useful things.
@@ -20,8 +20,8 @@ Pod::Spec.new do |s|
   s.license      			= { :type => "Public Domain", :file => "LICENSE" }
   s.author             			= { "Nathan Douglas" => "ndouglas@devontechnologies.com" }
   s.ios.deployment_target 		= "7.0"
-  s.osx.deployment_target 		= "10.8"
-  s.source       			= { :git => "https://github.com/ndouglas/ReactiveZipZap.git", :tag => "1.0.11" }
+  s.osx.deployment_target 		= "10.9"
+  s.source       			= { :git => "https://github.com/ndouglas/ReactiveZipZap.git", :tag => "1.0.12" }
   s.subspec 'Core' do |cs|
   	cs.exclude_files 		= "*.Tests.m"
   	cs.source_files  		= "*.{h,m}"

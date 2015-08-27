@@ -50,8 +50,6 @@
     return [NSURL fileURLWithPath:[NSString rzz_temporaryPathOrError:error]];
 }
 
-static int RZZXattrOptions = XATTR_NOFOLLOW | XATTR_SHOWCOMPRESSION;
-
 - (NSArray *)rzz_namesOfExtendedAttributesWithError:(NSError **)error {
     NSCAssert([self isFileURL], @"self needs to be a file URL");
     return [self.path rzz_namesOfExtendedAttributesWithError:error];
