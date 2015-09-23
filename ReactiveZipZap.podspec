@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         			= "ReactiveZipZap"
-  s.version      			= "1.0.13"
+  s.version      			= "1.0.14"
   s.summary      			= "Bridging ZipZap to ReactiveCocoa with some hopefully useful things."
   s.description  			= <<-DESC
                             Bridging ZipZap to ReactiveCocoa with some hopefully useful things.
@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
                                 "Nathan Douglas" => "ndouglas@devontechnologies.com"
                             }
   s.ios.deployment_target 	= "7.0"
-  s.osx.deployment_target 		= "10.9"
+  s.osx.deployment_target 	= "10.8"
   s.source       			= {
                                 :git => "https://github.com/ndouglas/ReactiveZipZap.git",
                                 :branch => "master"
